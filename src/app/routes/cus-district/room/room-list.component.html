@@ -1,0 +1,33 @@
+<page-header [title]="''"></page-header>
+<nz-card [nzBordered]="false">
+  <nz-tree
+    [(ngModel)]="nodes"
+    [nzShowExpand]="true"
+    [nzDraggable]="true"
+    (nzOnDragStart)="dragStart($event)"
+    (nzClick)="activeNode($event)"
+    (nzDblClick)="openFolder($event)">
+    <ng-template #contextTemplate>
+      <ul nz-menu nzInDropDown>
+        <li nz-menu-item (click)="selectDropdown()">新建文件</li>
+        <li nz-menu-item (click)="selectDropdown()">新建文件夹</li>
+      </ul>
+    </ng-template>
+    <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
+          <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading"
+                (contextmenu)="contextMenu($event,contextTemplate, node)">
+            <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
+            <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
+            <span class="folder-name">{{node.title}}</span>
+            <span class="folder-desc">{{node?.origin?.author | lowercase}} created at 2018-04-01</span>
+          </span>
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate, node)">
+            <i class="anticon anticon-file"></i>
+            <span class="file-name">{{node.title}}</span>
+            <span class="file-desc">{{node?.origin?.author | lowercase}} modified at 2018-05-01</span>
+          </span>
+        </span>
+    </ng-template>
+  </nz-tree>
+</nz-card>

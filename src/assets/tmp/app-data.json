@@ -59,6 +59,34 @@
       ]
     },
     {
+      "text": "cus",
+      "i18n": "cus",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "district",
+          "i18n": "district",
+          "icon": "anticon anticon-cloud-o",
+          "hideInBreadcrumb": true,
+          "children": [
+            {
+              "text": "company",
+              "link": "/cus/district/company-list",
+              "i18n": "company",
+              "shortcut": true
+            },
+            {
+              "text": "room",
+              "link": "/cus/district/room-list",
+              "i18n": "room",
+              "shortcut": true
+            }
+          ]
+        }
+      ]
+    },
+    {
       "text": "Alain",
       "group": true,
       "hideInBreadcrumb": true,
@@ -352,28 +380,6 @@
               "text": "Poi",
               "link": "/extras/poi",
               "i18n": "poi"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "text": "cus",
-      "i18n": "cus",
-      "group": true,
-      "hideInBreadcrumb": true,
-      "children": [
-        {
-          "text": "district",
-          "i18n": "district",
-          "icon": "anticon anticon-cloud-o",
-          "hideInBreadcrumb": true,
-          "children": [
-            {
-              "text": "company",
-              "link": "/cus/district/company-list",
-              "i18n": "company",
-              "shortcut": true
             }
           ]
         }
