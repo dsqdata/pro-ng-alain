@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {CompanyListComponent} from "./company/company-list.component";
 import {RoomListComponent} from "./room/room-list.component";
-import {CardComponent} from "./card/card.component";
+import {EcardComponent} from "./card/ecard/ecard.component";
+import {WcardComponent} from "./card/wcard/wcard.component";
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
     children: [
       {path: 'company-list', component: CompanyListComponent},
       {path: 'room-list', component: RoomListComponent},
-      {path: 'card', component: CardComponent},
+      {path: 'ecard', component: EcardComponent},
+      {path: 'wcard', component: WcardComponent},
     ],
   }
 ];

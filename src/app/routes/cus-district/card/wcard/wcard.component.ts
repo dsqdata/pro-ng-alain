@@ -9,11 +9,11 @@ import {
 } from '@delon/abc';
 
 @Component({
-  selector: 'cus-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.less'],
+  selector: 'cus-wcard',
+  templateUrl: './wcard.component.html',
+  styleUrls: ['./wcard.component.less'],
 })
-export class CardComponent implements OnInit {
+export class WcardComponent implements OnInit {
   notice: any[] = [];
   loading = true;
 
@@ -26,7 +26,7 @@ export class CardComponent implements OnInit {
     this.loading = false;
   }
 
-    click(id: string): void {
+  click(id: string): void {
     this.msg.info(id)
   }
 

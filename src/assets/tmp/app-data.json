@@ -91,9 +91,15 @@
           "hideInBreadcrumb": true,
           "children": [
             {
-              "text": "card",
-              "link": "/cus/district/card",
-              "i18n": "card",
+              "text": "ecard",
+              "link": "/cus/district/ecard",
+              "i18n": "ecard",
+              "shortcut": true
+            },
+            {
+              "text": "wcard",
+              "link": "/cus/district/wcard",
+              "i18n": "wcard",
               "shortcut": true
             }
           ]

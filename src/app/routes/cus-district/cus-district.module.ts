@@ -9,7 +9,8 @@ import {CompanyInfoComponent} from "./room/sub/company-info.component";
 import {CommunityInfoComponent} from "./room/sub/community-info.component";
 import {FloorInfoComponent} from "./room/sub/floor-info.component";
 import {ClassInfoComponent} from "./room/sub/class-info.component";
-import {CardComponent} from "./card/card.component";
+import {EcardComponent} from "./card/ecard/ecard.component";
+import {WcardComponent} from "./card/wcard/wcard.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -18,7 +19,8 @@ const COMPONENTS_NOROUNT = [
   CommunityInfoComponent,
   FloorInfoComponent,
   ClassInfoComponent,
-  CardComponent];
+  EcardComponent,
+  WcardComponent];
 
 @NgModule({
   imports: [SharedModule, CusDistrictRoutingModule],
