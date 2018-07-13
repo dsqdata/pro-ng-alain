@@ -1,0 +1,34 @@
+<nz-card [nzBordered]="false">
+  <div nz-row>
+    <button nz-button (click)="showModal()" [nzType]="'primary'">
+      <i class="anticon anticon-plus"></i>
+      <span>新建办公区</span>
+    </button>
+  </div>
+  <nz-divider class="mb-lg"></nz-divider>
+  <form #communityForm="ngForm" (ngSubmit)="handleOk()">
+    <nz-form-item class="mb-sm">
+      <nz-form-label nzRequired nzSpan="4">公司编码</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.num" name="num" maxlength="30" required/>
+        <p nz-form-explain>如：六位字母与数字组合，示例：ZH0001</p>
+      </nz-form-control>
+      <nz-form-label nzSpan="4">公司地址</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.address" name="address" maxlength="50"/>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <button nz-button type="button" (click)="btnSaveCl()"><i class="anticon anticon-close"></i>
+      <span>重置</span></button>
+    <button nz-button [disabled]="!communityForm.form.valid || !communityForm.form.dirty" [nzLoading]="http.loading"
+            [nzType]="'primary'"><i class="anticon anticon-save"></i><span>保存</span>
+    </button>
+
+    <button nz-button (click)="showModal()" [nzType]="'danger'" *ngIf="info && info.id">
+      <i class="anticon anticon-delete"></i>
+      <span>删除</span>
+    </button>
+  </form>
+</nz-card>

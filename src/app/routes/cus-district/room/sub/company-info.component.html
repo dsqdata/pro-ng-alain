@@ -1,0 +1,40 @@
+<nz-card [nzBordered]="false">
+  <form #companyForm="ngForm" nz-form>
+    <nz-form-item class="mb-sm">
+      <nz-form-label nzRequired nzSpan="4">公司编码</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.num" name="num" readonly/>
+      </nz-form-control>
+      <nz-form-label nzSpan="4">公司地址</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.address" name="address" readonly/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-sm">
+      <nz-form-label nzSpan="4"><span style="color: red">*</span> 公司名称</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.name" name="name" required readonly/>
+      </nz-form-control>
+      <nz-form-label nzSpan="4">公司全称</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.allname" name="allname" readonly/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-sm">
+      <nz-form-label nzSpan="4">负责人</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.contacts" name="contacts" readonly/>
+      </nz-form-control>
+      <nz-form-label nzSpan="4">联系电话</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.tel" name="tel" readonly/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-sm">
+      <nz-form-label nzSpan="4">公司简介</nz-form-label>
+      <nz-form-control nzSpan="8">
+        <input nz-input [(ngModel)]="info.introduction" name="introduction" readonly/>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-card>

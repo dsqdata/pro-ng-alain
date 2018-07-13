@@ -1,33 +1,82 @@
 <page-header [title]="''"></page-header>
-<nz-card [nzBordered]="false">
-  <nz-tree
-    [(ngModel)]="nodes"
-    [nzShowExpand]="true"
-    [nzDraggable]="true"
-    (nzOnDragStart)="dragStart($event)"
-    (nzClick)="activeNode($event)"
-    (nzDblClick)="openFolder($event)">
-    <ng-template #contextTemplate>
-      <ul nz-menu nzInDropDown>
-        <li nz-menu-item (click)="selectDropdown()">新建文件</li>
-        <li nz-menu-item (click)="selectDropdown()">新建文件夹</li>
-      </ul>
-    </ng-template>
-    <ng-template #nzTreeTemplate let-node>
-        <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
-          <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading"
-                (contextmenu)="contextMenu($event,contextTemplate, node)">
-            <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
-            <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
-            <span class="folder-name">{{node.title}}</span>
-            <span class="folder-desc">{{node?.origin?.author | lowercase}} created at 2018-04-01</span>
-          </span>
-          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate, node)">
-            <i class="anticon anticon-file"></i>
-            <span class="file-name">{{node.title}}</span>
-            <span class="file-desc">{{node?.origin?.author | lowercase}} modified at 2018-05-01</span>
-          </span>
-        </span>
-    </ng-template>
-  </nz-tree>
-</nz-card>
+
+<nz-row [nzGutter]="16">
+  <nz-col [nzSpan]="8">
+    <nz-card [nzBordered]="false">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="24">
+          <nz-input-group [nzSuffix]="suffixIcon">
+            <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue">
+          </nz-input-group>
+          <ng-template #suffixIcon>
+            <i class="anticon anticon-search"></i>
+          </ng-template>
+        </nz-col>
+      </nz-row>
+
+      <nz-tree [(ngModel)]="nodes"
+               [nzSearchValue]="searchValue"
+               [nzCheckable]="false"
+               [nzShowLine]="true"
+               (nzOnSearchNode)="mouseAction('search',$event)"
+               (nzCheckBoxChange)="mouseAction('check',$event)"
+               (nzClick)="mouseAction('click', $event)"
+               (nzExpandChange)="mouseAction('expand',$event)"
+               (nzDblClick)="mouseAction('dblclick',$event)">
+      </nz-tree>
+      `
+
+      <!--<nz-tree-->
+      <!--[(ngModel)]="nodes"-->
+      <!--[nzSearchValue]="searchValue"-->
+      <!--[nzShowExpand]="true"-->
+      <!--[nzDraggable]="false"-->
+      <!--(nzClick)="activeNode($event)"-->
+      <!--(nzDblClick)="openFolder($event)"-->
+      <!--(nzOnSearchNode)="mouseAction('search',$event)">-->
+      <!--<ng-template #contextTemplate>-->
+      <!--<ul nz-menu nzInDropDown>-->
+      <!--<li nz-menu-item (click)="selectDropdown()">新建文件</li>-->
+      <!--<li nz-menu-item (click)="selectDropdown()">新建文件夹</li>-->
+      <!--</ul>-->
+      <!--</ng-template>-->
+      <!--<ng-template #contextTemplate2>-->
+      <!--<ul nz-menu nzInDropDown>-->
+      <!--<li nz-menu-item (click)="selectDropdown()">新建文件2</li>-->
+      <!--<li nz-menu-item (click)="selectDropdown()">新建文件夹2</li>-->
+      <!--</ul>-->
+      <!--</ng-template>-->
+
+      <!--<ng-template #nzTreeTemplate let-node>-->
+      <!--<span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">-->
+      <!--<span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading"-->
+      <!--(contextmenu)="contextMenu($event,contextTemplate, node)">-->
+      <!--<i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>-->
+      <!--<i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>-->
+      <!--<span class="folder-name">{{node.title}}</span>-->
+      <!--</span>-->
+      <!--<span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate2, node)">-->
+      <!--<i class="anticon anticon-file"></i>-->
+      <!--<span class="file-name">{{node.title}}</span>-->
+      <!--</span>-->
+      <!--</span>-->
+      <!--</ng-template>-->
+      <!--</nz-tree>-->
+    </nz-card>
+  </nz-col>
+  <nz-col [nzSpan]="16">
+    <!--公司表单-->
+    <cus-company-info [info]="i" *ngIf="activedNode && activedNode.level == 0"></cus-company-info>
+    <!--社区-->
+    <cus-community-info [info]="i" *ngIf="activedNode && activedNode.level == 1"></cus-community-info>
+    <!--楼区-->
+    <cus-floor-info [info]="i" *ngIf="activedNode && activedNode.level == 2"></cus-floor-info>
+    <!-- 办公区-->
+    <cus-class-info [info]="i" *ngIf="activedNode && activedNode.level == 3" (saveOk)="classSaveOk($event)"
+                    (saveCl)="classSaveCl($event)"></cus-class-info>
+  </nz-col>
+</nz-row>
+
+
+
+

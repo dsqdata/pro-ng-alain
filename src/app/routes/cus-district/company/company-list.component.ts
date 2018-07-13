@@ -13,6 +13,10 @@ import {
   templateUrl: './company-list.component.html',
 })
 export class CompanyListComponent implements OnInit {
+  i: any = {};
+  isVisible = false;
+  isConfirmLoading = false;
+
   q: any = {
     pi: 1,
     ps: 10,
@@ -24,63 +28,30 @@ export class CompanyListComponent implements OnInit {
   loading = false;
   status = [
     {index: 0, text: '关闭', value: false, type: 'default', checked: false},
-    {
-      index: 1,
-      text: '运行中',
-      value: false,
-      type: 'processing',
-      checked: false,
-    },
+    {index: 1, text: '运行中', value: false, type: 'processing', checked: false},
     {index: 2, text: '已上线', value: false, type: 'success', checked: false},
     {index: 3, text: '异常', value: false, type: 'error', checked: false},
   ];
   @ViewChild('st') st: SimpleTableComponent;
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '规则编号', index: 'no'},
-    {title: '描述', index: 'description'},
-    {
-      title: '服务调用次数',
-      index: 'callNo',
-      type: 'number',
-      format: (item: any) => `${item.callNo} 万`,
-      sorter: (a: any, b: any) => a.callNo - b.callNo,
-    },
-    {
-      title: '状态',
-      index: 'status',
-      render: 'status',
-      filters: this.status,
-      filter: () => true,
-    },
-    {
-      title: '更新时间',
-      index: 'updatedAt',
-      type: 'date',
-      sorter: (a: any, b: any) => a.updatedAt - b.updatedAt,
-    },
+    {title: '公司编号', index: 'num'},
+    {title: '公司名称', index: 'name'},
+    {title: '状态', index: 'status', render: 'status', filters: this.status, filter: () => true},
+    {title: '更新时间', index: 'updatedAt', type: 'date'},
+    {title: '简介', index: 'introduction'},
     {
       title: '操作',
       buttons: [
-        {
-          text: '配置',
-          click: (item: any) => this.msg.success(`配置${item.no}`),
-        },
-        {
-          text: '订阅警报',
-          click: (item: any) => this.msg.success(`订阅警报${item.no}`),
-        },
+        {text: '编辑', click: (item: any) => this.showModal(item)},
+        {text: '删除', click: (item: any) => this.msg.success(`配置${item.no}`)}
       ],
     },
   ];
   selectedRows: SimpleTableData[] = [];
-  description = '';
-  totalCallNo = 0;
   expandForm = false;
 
-  constructor(private http: _HttpClient,
-              public msg: NzMessageService,
-              private modalSrv: NzModalService,) {
+  constructor(private http: _HttpClient, public msg: NzMessageService) {
   }
 
   ngOnInit() {
@@ -112,7 +83,6 @@ export class CompanyListComponent implements OnInit {
 
   checkboxChange(list: SimpleTableData[]) {
     this.selectedRows = list;
-    this.totalCallNo = this.selectedRows.reduce( (total, cv) => total + cv.callNo,  0,  );
   }
 
   remove() {
@@ -124,27 +94,32 @@ export class CompanyListComponent implements OnInit {
       });
   }
 
-  approval() {
-    this.msg.success(`审批了 ${this.selectedRows.length} 笔`);
-  }
-
-  add(tpl: TemplateRef<{}>) {
-    this.modalSrv.create({
-      nzTitle: '新建规则',
-      nzContent: tpl,
-      nzOnOk: () => {
-        this.loading = true;
-        this.http
-          .post('/rule', {description: this.description})
-          .subscribe(() => {
-            this.getData();
-          });
-      },
-    });
-  }
-
   reset(ls: any[]) {
     for (const item of ls) item.value = false;
     this.getData();
   }
+
+
+  showModal(item: any): void {
+    if (item) {
+      this.i = item;
+    } else {
+      this.i = {}
+    }
+    console.log(this.i)
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isConfirmLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isConfirmLoading = false;
+    }, 3000);
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
 }
