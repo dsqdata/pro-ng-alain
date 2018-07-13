@@ -14,22 +14,25 @@ import {
 })
 export class ClassInfoComponent implements OnInit {
   @Input()
-  info: any;
+  node: any;
   @Output()
   saveOk: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  saveCl: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
   deleOk: EventEmitter<any> = new EventEmitter<any>();
-
+  info: any;
   constructor(private http: _HttpClient, public msg: NzMessageService) {
     console.log(this.info)
   }
 
   btnSaveCl(): void {
-    this.saveCl.emit({});
+    this.info = JSON.parse(JSON.stringify(this.node.origin));
+  }
+
+  addInfo(): void {
+    this.info = {};
   }
 
   ngOnInit() {
+    this.info = JSON.parse(JSON.stringify(this.node.origin));
   }
 }

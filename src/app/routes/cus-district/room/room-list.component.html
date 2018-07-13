@@ -66,14 +66,14 @@
   </nz-col>
   <nz-col [nzSpan]="16">
     <!--公司表单-->
-    <cus-company-info [info]="i" *ngIf="activedNode && activedNode.level == 0"></cus-company-info>
+    <cus-company-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 0"></cus-company-info>
     <!--社区-->
-    <cus-community-info [info]="i" *ngIf="activedNode && activedNode.level == 1"></cus-community-info>
+    <cus-community-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 1"></cus-community-info>
     <!--楼区-->
-    <cus-floor-info [info]="i" *ngIf="activedNode && activedNode.level == 2"></cus-floor-info>
+    <cus-floor-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 2"></cus-floor-info>
     <!-- 办公区-->
-    <cus-class-info [info]="i" *ngIf="activedNode && activedNode.level == 3" (saveOk)="classSaveOk($event)"
-                    (saveCl)="classSaveCl($event)"></cus-class-info>
+    <cus-class-info [node]="activedNode" *ngIf="activedNode && activedNode.level == 3"
+                    (saveOk)="classSaveOk($event)"></cus-class-info>
   </nz-col>
 </nz-row>
 

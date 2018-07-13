@@ -67,59 +67,8 @@ import {_HttpClient} from "@delon/theme";
   `]
 })
 export class RoomListComponent implements OnInit {
-  // can active only one node
   activedNode: NzTreeNode;
-  i: any = {};
-  nodes = [
-    new NzTreeNode({
-      title: 'root1',
-      key: '1001',
-      author: 'ANGULAR',
-      expanded: true,
-      children: [
-        {
-          title: 'child1',
-          key: '10001',
-          author: 'ZORRO',
-          children: [
-            {
-              title: 'child1.1',
-              key: '100011',
-              author: 'ZORRO',
-              children: []
-            },
-            {
-              title: 'child1.2',
-              key: '100012',
-              author: 'ZORRO',
-              children: [
-                {
-                  title: 'grandchild1.2.1',
-                  key: '1000121',
-                  author: 'ZORRO-FANS',
-                  isLeaf: true,
-                  checked: true,
-                  disabled: true
-                },
-                {
-                  title: 'grandchild1.2.2',
-                  key: '1000122',
-                  author: 'ZORRO-FANS',
-                  isLeaf: true
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }),
-    new NzTreeNode({
-      title: 'root2',
-      key: '1002',
-      author: 'ANGULAR',
-      expanded: false,
-    })
-  ];
+  nodes: Array<any>;
 
   mouseAction(name: string, e: any): void {
     console.log(name, e);
@@ -130,10 +79,61 @@ export class RoomListComponent implements OnInit {
     }
   }
 
+  getNodes(): any {
+    return [
+      new NzTreeNode({
+        title: 'root1',
+        key: '1001',
+        author: 'ANGULAR',
+        expanded: true,
+        children: [
+          {
+            title: 'child1',
+            key: '10001',
+            author: 'ZORRO',
+            children: [
+              {
+                title: 'child1.1',
+                key: '100011',
+                author: 'ZORRO',
+                children: []
+              },
+              {
+                title: 'child1.2',
+                key: '100012',
+                author: 'ZORRO',
+                children: [
+                  {
+                    title: 'grandchild1.2.1',
+                    key: '1000121',
+                    author: 'ZORRO-FANS',
+                    isLeaf: true,
+                    checked: true,
+                    disabled: true
+                  },
+                  {
+                    title: 'grandchild1.2.2',
+                    key: '1000122',
+                    author: 'ZORRO-FANS',
+                    isLeaf: true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }),
+      new NzTreeNode({
+        title: 'root2',
+        key: '1002',
+        author: 'ANGULAR',
+        expanded: false,
+      })
+    ]
+  }
+
   click(data: NzFormatEmitEvent): void {
     this.activedNode = data.node;
-    this.i = data.node.origin
-    console.log(this.activedNode)
   }
 
   dblclick(data: NzFormatEmitEvent): void {
@@ -149,6 +149,7 @@ export class RoomListComponent implements OnInit {
   }
 
   constructor(private http: _HttpClient, public msg: NzMessageService) {
+    this.nodes = this.getNodes()
     this.activedNode = this.nodes[0]
   }
 
@@ -158,9 +159,5 @@ export class RoomListComponent implements OnInit {
 
   classSaveOk(data): void {
 
-  }
-
-  classSaveCl(data): void {
-    this.i = this.activedNode
   }
 }
