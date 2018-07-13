@@ -1,0 +1,34 @@
+<div class="content__title">
+  <h1>
+    卡片管理
+    <small>卡片相关管理操作，包含：开卡、补卡、卡片注销、卡片充值 ... ...</small>
+  </h1>
+</div>
+<div nz-row [nzGutter]="16">
+  <div nz-col nzXs="24" nzSm="24" nzMd="24">
+    <nz-card [nzBordered]="false" [nzLoading]="loading"
+             class="ant-card__body-nopadding mb-lg project-list">
+      <ng-template #extra>
+        <a (click)="msg.success('to')">全部项目</a>
+      </ng-template>
+      <div *ngFor="let item of notice" nz-card-grid class="project-grid">
+        <nz-card [nzBordered]="false" class="ant-card__body-nopadding mb0" (click)="click(item.id)">
+          <nz-card-meta [nzTitle]="noticeTitle" [nzDescription]="item.description">
+            <ng-template #noticeTitle>
+              <div class="card-title">
+                <nz-avatar [nzSrc]="item.logo" [nzSize]="'small'"></nz-avatar>
+                <a>{{item.title}}</a>
+              </div>
+            </ng-template>
+          </nz-card-meta>
+          <div class="project-item">
+            <a>{{item.member}}</a>
+            <span *ngIf="item.updatedAt" class="datetime" title="{{item.updatedAt}}">
+              {{item.updatedAt | _date: 'fn' }}
+            </span>
+          </div>
+        </nz-card>
+      </div>
+    </nz-card>
+  </div>
+</div>

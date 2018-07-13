@@ -83,6 +83,20 @@
               "shortcut": true
             }
           ]
+        },
+        {
+          "text": "cardmg",
+          "i18n": "cardmg",
+          "icon": "anticon anticon-cloud-o",
+          "hideInBreadcrumb": true,
+          "children": [
+            {
+              "text": "card",
+              "link": "/cus/district/card",
+              "i18n": "card",
+              "shortcut": true
+            }
+          ]
         }
       ]
     },
