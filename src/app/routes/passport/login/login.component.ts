@@ -20,6 +20,7 @@ import { StartupService } from '@core/startup/startup.service';
   providers: [SocialService],
 })
 export class UserLoginComponent implements OnDestroy {
+  mobileLogin = false;
   form: FormGroup;
   error = '';
   type = 0;
