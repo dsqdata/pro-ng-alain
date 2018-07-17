@@ -7,17 +7,17 @@ import { Component } from '@angular/core';
 })
 export class LayoutPassportComponent {
   links = [
-    {
-      title: '帮助',
-      href: '',
-    },
-    {
-      title: '隐私',
-      href: '',
-    },
-    {
-      title: '条款',
-      href: '',
-    },
+    // {
+    //   title: '帮助',
+    //   href: 'github.com/dsqdata/pro-ng-alain.git',
+    // },
+    // {
+    //   title: '隐私',
+    //   href: 'github.com/dsqdata/pro-ng-alain.git',
+    // },
+    // {
+    //   title: '条款',
+    //   href: 'http://github.com/dsqdata/pro-ng-alain.git',
+    // },
   ];
 }
