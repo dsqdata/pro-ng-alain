@@ -13,38 +13,44 @@ import {
   templateUrl: './company-list.component.html',
 })
 export class CompanyListComponent implements OnInit {
+
+  url = `/api/company/getCompanyInfos`;
+  reqMethod = 'post'
+  ps = 10;
+  args: any = {};
+
+  getStatusType(str: number): string {
+    const statusItem = this.status[str];
+    return statusItem.type;
+  }
+
+  getStatusText(str: number): string {
+    const statusItem = this.status[str];
+    return statusItem.text;
+  }
+
   i: any = {};
   isVisible = false;
   isConfirmLoading = false;
 
-  q: any = {
-    pi: 1,
-    ps: 10,
-    sorter: '',
-    status: null,
-    statusList: [],
-  };
-  data: any[] = [];
   loading = false;
   status = [
-    {index: 0, text: '关闭', value: false, type: 'default', checked: false},
-    {index: 1, text: '运行中', value: false, type: 'processing', checked: false},
-    {index: 2, text: '已上线', value: false, type: 'success', checked: false},
-    {index: 3, text: '异常', value: false, type: 'error', checked: false},
+    {index: 0, text: '删除', value: false, type: 'error', checked: false},
+    {index: 1, text: '正常', value: false, type: 'success', checked: false},
   ];
   @ViewChild('st') st: SimpleTableComponent;
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '公司编号', index: 'num'},
+    {title: '公司编号', index: '_id'},
     {title: '公司名称', index: 'name'},
-    {title: '状态', index: 'status', render: 'status', filters: this.status, filter: () => true},
-    {title: '更新时间', index: 'updatedAt', type: 'date'},
+    {title: '状态', index: 'status', render: 'status'},
+    {title: '更新时间', index: 'date', type: 'date'},
     {title: '简介', index: 'introduction'},
     {
       title: '操作',
       buttons: [
-        {text: '编辑', click: (item: any) => this.showModal(item)},
-        {text: '删除', click: (item: any) => this.msg.success(`配置${item.no}`)}
+        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.status === 1},
+        {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.status === 1}
       ],
     },
   ];
@@ -54,31 +60,12 @@ export class CompanyListComponent implements OnInit {
   constructor(private http: _HttpClient, public msg: NzMessageService) {
   }
 
-  ngOnInit() {
-    this.getData();
+  getData() {
+    this.st.pi = 1;
+    this.st.reload()
   }
 
-  getData() {
-    this.loading = true;
-    this.q.statusList = this.status
-      .filter(w => w.checked)
-      .map(item => item.index);
-    if (this.q.status !== null && this.q.status > -1)
-      this.q.statusList.push(this.q.status);
-    this.http
-      .get('/rule', this.q)
-      .pipe(
-        map((list: any[]) =>
-          list.map(i => {
-            const statusItem = this.status[i.status];
-            i.statusText = statusItem.text;
-            i.statusType = statusItem.type;
-            return i;
-          }),
-        ),
-        tap(() => (this.loading = false)),
-      )
-      .subscribe(res => (this.data = res));
+  ngOnInit() {
   }
 
   checkboxChange(list: SimpleTableData[]) {
@@ -89,16 +76,29 @@ export class CompanyListComponent implements OnInit {
     this.http
       .delete('/rule', {nos: this.selectedRows.map(i => i.no).join(',')})
       .subscribe(() => {
-        this.getData();
         this.st.clearCheck();
       });
   }
 
   reset(ls: any[]) {
     for (const item of ls) item.value = false;
-    this.getData();
+    this.st.reload()
   }
 
+  delIteml(item: any): void {
+    this.http
+      .post('/api/company/delCompanyInfo', {_id: item._id})
+      .subscribe(
+        (obj: any) => {
+          if (obj.state == "success") {
+            this.msg.info("删除成功")
+            this.st.reload()
+          } else {
+            this.msg.error(obj.message)
+          }
+        }
+      )
+  }
 
   showModal(item: any): void {
     if (item) {
@@ -112,13 +112,31 @@ export class CompanyListComponent implements OnInit {
 
   handleOk(): void {
     this.isConfirmLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isConfirmLoading = false;
-    }, 3000);
+    this.http
+      .post('/api/company/addCompanyInfo', this.i).subscribe(
+      (obj: any) => {
+        if (obj.state == "success") {
+          this.isConfirmLoading = false;
+          this.isVisible = false;
+          this.st.reload()
+          console.log(obj)
+        } else {
+          this.isConfirmLoading = false;
+          this.msg.error(obj.message)
+          console.log(obj)
+        }
+      }
+    )
+
+
+    // setTimeout(() => {
+    //   this.isVisible = false;
+    //   this.isConfirmLoading = false;
+    // }, 3000);
   }
 
   handleCancel(): void {
+    this.st.reload()
     this.isVisible = false;
   }
 

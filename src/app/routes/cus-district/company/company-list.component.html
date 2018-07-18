@@ -4,33 +4,33 @@
     <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
       <nz-col nzMd="8" nzSm="24" style="margin-bottom: 10px;margin-top: 10px;">
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
-          <nz-form-label nzFor="no">公司编号</nz-form-label>
+          <nz-form-label nzFor="_id">公司编号</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.num" name="num" placeholder="请输入" id="num">
+            <input nz-input [(ngModel)]="args._id" name="_id" placeholder="请输入" id="_id">
           </nz-form-control>
         </nz-form-item>
       </nz-col>
       <nz-col nzMd="8" nzSm="24" style="margin-bottom: 10px;margin-top: 10px;">
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
-          <nz-form-label nzFor="no">公司名称</nz-form-label>
+          <nz-form-label nzFor="name">公司名称</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.name" name="name" placeholder="请输入" id="name">
+            <input nz-input [(ngModel)]="args.name" name="name" placeholder="请输入" id="name">
           </nz-form-control>
         </nz-form-item>
       </nz-col>
-      <nz-col nzMd="8" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">
-        <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
-          <nz-form-label nzFor="no">公司全称</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="q.allname" name="allname" placeholder="请输入" id="allname">
-          </nz-form-control>
-        </nz-form-item>
-      </nz-col>
+      <!--<nz-col nzMd="8" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">-->
+      <!--<nz-form-item style="margin-bottom: 0px; margin-right: 16px;">-->
+      <!--<nz-form-label nzFor="no">公司全称</nz-form-label>-->
+      <!--<nz-form-control>-->
+      <!--<input nz-input [(ngModel)]="q.allname" name="allname" placeholder="请输入" id="allname">-->
+      <!--</nz-form-control>-->
+      <!--</nz-form-item>-->
+      <!--</nz-col>-->
       <nz-col nzMd="8" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">
         <nz-form-item style="margin-bottom: 0px;margin-right: 16px;">
           <nz-form-label nzFor="status">记录状态</nz-form-label>
           <nz-form-control>
-            <nz-select [(ngModel)]="q.status" name="status" id="status" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
+            <nz-select [(ngModel)]="args.status" name="status" id="status" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
               <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option>
             </nz-select>
           </nz-form-control>
@@ -67,12 +67,20 @@
     </ng-container>
   </div>
   <nz-divider class="mb-lg"></nz-divider>
-  <simple-table #st [columns]="columns" [data]="data" [loading]="loading" (checkboxChange)="checkboxChange($event)"
-                (filterChange)="getData()">
+  <!--<simple-table #st [columns]="columns" [data]="data" [loading]="loading" (checkboxChange)="checkboxChange($event)"-->
+  <!--(filterChange)="getData()" [showPagination]="showPagination" [total]="total">-->
+  <!--<ng-template st-row="status" let-i>-->
+  <!--<nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>-->
+  <!--</ng-template>-->
+  <!--</simple-table>-->
+
+  <simple-table #st [data]="url" [reqMethod]="reqMethod" [extraParams]="args" [resReName]="{list: 'companyInfos' }" [total]="{list: 'total' }" [ps]="ps"
+                [columns]="columns">
     <ng-template st-row="status" let-i>
-      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+      <nz-badge [nzStatus]="getStatusType(i.status)" [nzText]="getStatusText(i.status)"></nz-badge>
     </ng-template>
   </simple-table>
+
 </nz-card>
 <!--modalContent-->
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
@@ -84,10 +92,9 @@
 
     <ng-template #modalContent>
       <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4"><span style="color: red">*</span> 公司编码</nz-form-label>
+        <nz-form-label nzSpan="4"> 公司编码</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.num" name="num" maxlength="30" required/>
-          <p nz-form-explain>如：六位字母与数字组合，示例：ZH0001</p>
+          <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
         </nz-form-control>
         <nz-form-label nzSpan="4">公司地址</nz-form-label>
         <nz-form-control nzSpan="8">
@@ -95,7 +102,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4"><span style="color: red">*</span> 公司名称</nz-form-label>
+        <nz-form-label nzSpan="4" nzRequired>公司名称</nz-form-label>
         <nz-form-control nzSpan="8">
           <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required/>
         </nz-form-control>
@@ -126,7 +133,8 @@
 
     <ng-template #modalFooter>
       <button nz-button type="button" (click)="handleCancel()">关闭</button>
-      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="http.loading" [nzType]="'primary'">保存
+      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
+              (click)="handleOk()">保存
       </button>
     </ng-template>
   </form>

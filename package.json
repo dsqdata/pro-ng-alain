@@ -24,6 +24,7 @@
     "precommit": "npm run lint-staged",
     "ng": "ng",
     "start": "ng serve -o",
+    "ngstart": "ng serve --proxy-config proxy.conf.json",
     "hmr": "ng serve -c=hmr",
     "build": "ng build --prod --build-optimizer",
     "analyze": "ng build --prod --build-optimizer --stats-json",
