@@ -4,6 +4,9 @@ import {
   NzMessageService
 } from 'ng-zorro-antd';
 import {_HttpClient} from "@delon/theme";
+import {CommunityListComponent} from "./community/community-list.component";
+import {FloorListComponent} from "./floor/floor-list.component";
+import {ClassListComponent} from "./class/class-list.component";
 
 @Component({
   selector: 'nz-demo-tree-dir-tree',
@@ -69,6 +72,9 @@ import {_HttpClient} from "@delon/theme";
 export class RoomListComponent implements OnInit {
   activedNode: NzTreeNode;
   nodes: Array<any>;
+  @ViewChild('communityList') communityList: CommunityListComponent;
+  @ViewChild('floorList') floorList: FloorListComponent;
+  @ViewChild('classList') classList: ClassListComponent;
 
   mouseAction(name: string, e: any): void {
     console.log(name, e);
@@ -79,61 +85,139 @@ export class RoomListComponent implements OnInit {
     }
   }
 
+  processTree(data): void {
+    this.nodes = this.getNodes()
+    // this.activedNode..isExpanded = true
+    // this.activedNode.addChildren([new NzTreeNode(data)],0)
+  }
+
   getNodes(): any {
-    return [
-      new NzTreeNode({
-        title: 'root1',
-        key: '1001',
-        author: 'ANGULAR',
-        expanded: true,
-        children: [
-          {
-            title: 'child1',
-            key: '10001',
-            author: 'ZORRO',
-            children: [
-              {
-                title: 'child1.1',
-                key: '100011',
-                author: 'ZORRO',
+    var ar = []
+    this.http
+      .post('/api/company/getCompanyInfoTree', {})
+      .subscribe(
+        (obj: any) => {
+          console.log(obj)
+          if (obj.state == "success") {
+            var companyList = obj.companyList;
+            var communityList = obj.communityList;
+            var floorList = obj.floorList;
+            var classList = obj.classList;
+
+            for (var i in companyList) {
+              var companyObj = {
+                title: companyList[i].name,
+                key: companyList[i]._id,
+                object: companyList[i],
                 children: []
-              },
-              {
-                title: 'child1.2',
-                key: '100012',
-                author: 'ZORRO',
-                children: [
-                  {
-                    title: 'grandchild1.2.1',
-                    key: '1000121',
-                    author: 'ZORRO-FANS',
-                    isLeaf: true,
-                    checked: true,
-                    disabled: true
-                  },
-                  {
-                    title: 'grandchild1.2.2',
-                    key: '1000122',
-                    author: 'ZORRO-FANS',
-                    isLeaf: true
-                  }
-                ]
               }
-            ]
+
+              for (var j in communityList) {
+                if (companyList[i]._id === communityList[j].companyId) {
+                  var communityObj = {
+                    title: communityList[j].name,
+                    key: communityList[j]._id,
+                    object: communityList[j],
+                    children: []
+                  }
+                  for (var k in floorList) {
+                    if (communityList[j]._id === floorList[k].communityId) {
+                      var floorObj = {
+                        title: floorList[k].name,
+                        key: floorList[k]._id,
+                        object: floorList[k],
+                        children: []
+                      }
+                      for (var o in classList) {
+                        if (floorList[k]._id === classList[o].floorId) {
+                          var classObj = {
+                            title: classList[o].name,
+                            key: classList[o]._id,
+                            object: classList[o],
+                            children: []
+                          }
+                          floorObj.children.push(classObj)
+                        }
+                      }
+                      communityObj.children.push(floorObj)
+                    }
+                  }
+                  companyObj.children.push(communityObj)
+                }
+              }
+              ar.push(new NzTreeNode(companyObj))
+            }
+          } else {
+            this.msg.error(obj.message)
           }
-        ]
-      }),
-      new NzTreeNode({
-        title: 'root2',
-        key: '1002',
-        author: 'ANGULAR',
-        expanded: false,
-      })
-    ]
+        }
+      )
+    return ar
+    //   [
+    //   new NzTreeNode({
+    //     title: 'root1',
+    //     key: '1001',
+    //     author: 'ANGULAR',
+    //     expanded: true,
+    //     children: [
+    //       {
+    //         title: 'child1',
+    //         key: '10001',
+    //         author: 'ZORRO',
+    //         children: [
+    //           {
+    //             title: 'child1.1',
+    //             key: '100011',
+    //             author: 'ZORRO',
+    //             children: []
+    //           },
+    //           {
+    //             title: 'child1.2',
+    //             key: '100012',
+    //             author: 'ZORRO',
+    //             children: [
+    //               {
+    //                 title: 'grandchild1.2.1',
+    //                 key: '1000121',
+    //                 author: 'ZORRO-FANS',
+    //                 isLeaf: true,
+    //                 checked: true,
+    //                 disabled: true
+    //               },
+    //               {
+    //                 title: 'grandchild1.2.2',
+    //                 key: '1000122',
+    //                 author: 'ZORRO-FANS',
+    //                 isLeaf: true
+    //               }
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }),
+    //   new NzTreeNode({
+    //     title: 'root2',
+    //     key: '1002',
+    //     author: 'ANGULAR',
+    //     expanded: false,
+    //   })
+    // ]
   }
 
   click(data: NzFormatEmitEvent): void {
     this.activedNode = data.node;
+    this.process(data.node)
+  }
+
+  process(node): void {
+    if (node.level == 0 && this.communityList) {
+      this.communityList.resetSelect(node);
+    } else if (node.level == 1 && this.floorList) {
+      this.floorList.resetSelect(node);
+    } else if (node.level == 2 && this.classList) {
+      this.classList.resetSelect(node);
+    }
   }
 
   dblclick(data: NzFormatEmitEvent): void {
@@ -149,12 +233,10 @@ export class RoomListComponent implements OnInit {
   }
 
   constructor(private http: _HttpClient, public msg: NzMessageService) {
-    this.nodes = this.getNodes()
-    this.activedNode = this.nodes[0]
   }
 
   ngOnInit(): void {
-
+    this.nodes = this.getNodes()
   }
 
   classSaveOk(data): void {

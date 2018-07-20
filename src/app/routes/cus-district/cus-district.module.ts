@@ -11,23 +11,40 @@ import {FloorInfoComponent} from "./room/sub/floor-info.component";
 import {ClassInfoComponent} from "./room/sub/class-info.component";
 import {EcardComponent} from "./card/ecard/ecard.component";
 import {WcardComponent} from "./card/wcard/wcard.component";
+import {CommunityListComponent} from "./room/community/community-list.component";
+import {FloorListComponent} from "./room/floor/floor-list.component";
+import {ClassListComponent} from "./room/class/class-list.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
+  CommunityListComponent,
+  ClassListComponent,
+  FloorListComponent,
   RoomListComponent,
   CompanyInfoComponent,
   CommunityInfoComponent,
   FloorInfoComponent,
   ClassInfoComponent,
   EcardComponent,
-  WcardComponent];
+  WcardComponent
+];
+
+const COMPONENTS_EXPORTS = [
+  CompanyInfoComponent,
+  CommunityInfoComponent,
+  FloorInfoComponent,
+  ClassInfoComponent,
+  CommunityListComponent,
+  FloorListComponent,
+  ClassListComponent
+]
 
 @NgModule({
   imports: [SharedModule, CusDistrictRoutingModule],
   declarations: [
     ...COMPONENTS_NOROUNT,
   ],
-  exports: [CompanyInfoComponent, CommunityInfoComponent, FloorInfoComponent, ClassInfoComponent],
+  exports: COMPONENTS_EXPORTS,
   entryComponents: COMPONENTS_NOROUNT,
 })
 export class CusDistrictModule {

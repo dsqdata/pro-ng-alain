@@ -1,0 +1,163 @@
+<nz-card [nzBordered]="false">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form" style="margin-bottom: 0px;">
+    <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+      <nz-col nzMd="12" nzSm="24" style="margin-bottom: 10px;margin-top: 10px;">
+        <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
+          <nz-form-label nzFor="name">楼区名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="args.name" name="name" placeholder="请输入" id="name">
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzMd="12" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">
+        <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
+          <nz-form-label nzFor="_id">楼区编号</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="args._id" name="_id" placeholder="请输入" id="_id">
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <!--<nz-col nzMd="8" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">-->
+      <!--<nz-form-item style="margin-bottom: 0px; margin-right: 16px;">-->
+      <!--<nz-form-label nzFor="no">公司全称</nz-form-label>-->
+      <!--<nz-form-control>-->
+      <!--<input nz-input [(ngModel)]="q.allname" name="allname" placeholder="请输入" id="allname">-->
+      <!--</nz-form-control>-->
+      <!--</nz-form-item>-->
+      <!--</nz-col>-->
+      <nz-col nzMd="12" nzSm="24" *ngIf="expandForm" style="margin-bottom: 10px;margin-top: 10px;">
+        <nz-form-item style="margin-bottom: 0px;margin-right: 16px;">
+          <nz-form-label nzFor="status">记录状态</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="args.status" name="status" id="status" [nzPlaceHolder]="'请选择'"
+                       [nzShowSearch]="true">
+              <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="expandForm ? 24 : 12" [class.text-right]="expandForm"
+              style="margin-bottom: 10px;margin-top: 10px;">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="reset" (click)="getData()" class="mx-sm">重置</button>
+        <a (click)="expandForm=!expandForm">
+          {{expandForm ? '收起' : '展开'}}
+          <i class="anticon" [class.anticon-down]="!expandForm" [class.anticon-up]="expandForm"></i>
+        </a>
+      </nz-col>
+    </nz-row>
+  </form>
+</nz-card>
+<nz-card [nzBordered]="false">
+  <div nz-row>
+    <button nz-button (click)="showModal()" [nzType]="'primary'">
+      <i class="anticon anticon-plus"></i>
+      <span>新建</span>
+    </button>
+    <ng-container *ngIf="selectedRows.length > 0">
+      <nz-dropdown [nzPlacement]="'bottomLeft'">
+        <button nz-button nz-dropdown class="ml-sm">
+          更多操作
+          <i class="anticon anticon-down"></i>
+        </button>
+        <ul nz-menu>
+          <li nz-menu-item (click)="remove()">删除</li>
+        </ul>
+      </nz-dropdown>
+    </ng-container>
+  </div>
+  <nz-divider class="mb-lg"></nz-divider>
+  <!--<simple-table #st [columns]="columns" [data]="data" [loading]="loading" (checkboxChange)="checkboxChange($event)"-->
+  <!--(filterChange)="getData()" [showPagination]="showPagination" [total]="total">-->
+  <!--<ng-template st-row="status" let-i>-->
+  <!--<nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>-->
+  <!--</ng-template>-->
+  <!--</simple-table>-->
+
+  <simple-table #st [data]="url" [reqMethod]="reqMethod" [extraParams]="args" [resReName]="{list: 'companyInfos' }"
+                [total]="{list: 'total' }" [ps]="ps"
+                [columns]="columns">
+    <ng-template st-row="status" let-i>
+      <nz-badge [nzStatus]="getStatusType(i.status)" [nzText]="getStatusText(i.status)"></nz-badge>
+    </ng-template>
+  </simple-table>
+
+</nz-card>
+<!--modalContent-->
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="handleCancel()" nzWidth="70%">
+  <form #f="ngForm" (ngSubmit)="handleOk()" nz-form>
+    <ng-template #modalTitle>
+      公司信息
+    </ng-template>
+
+    <ng-template #modalContent>
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4"> 公司编码</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.companyId" name="companyId" maxlength="30" readonly/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">公司名称</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.companyName" name="companyName" maxlength="50" readonly/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4"> 社区编码</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.communityId" name="communityId" maxlength="30" readonly/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">社区名称</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.communityName" name="communityName" maxlength="50" readonly/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4"> 楼区编码</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">楼区地址</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.address" name="address" maxlength="50"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4" nzRequired>楼区名称</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">楼区全称</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4">负责人</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内"/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">联系电话</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4">楼区简介</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.introduction" name="introduction" maxlength="300" placeholder="300字以内"/>
+        </nz-form-control>
+      </nz-form-item>
+
+    </ng-template>
+
+    <ng-template #modalFooter>
+      <button nz-button type="button" (click)="handleCancel()">关闭</button>
+      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
+              (click)="handleOk()">保存
+      </button>
+    </ng-template>
+  </form>
+</nz-modal>

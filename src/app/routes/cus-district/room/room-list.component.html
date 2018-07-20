@@ -66,14 +66,19 @@
   </nz-col>
   <nz-col [nzSpan]="16">
     <!--公司表单-->
-    <cus-company-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 0"></cus-company-info>
+    <!--<cus-company-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 0"></cus-company-info>-->
     <!--社区-->
-    <cus-community-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 1"></cus-community-info>
+    <cus-community-list #communityList [node]="activedNode"
+                        *ngIf="!activedNode || activedNode.level == 0"
+                        (processTree)="processTree($event)"></cus-community-list>
     <!--楼区-->
-    <cus-floor-info [info]="activedNode" *ngIf="activedNode && activedNode.level == 2"></cus-floor-info>
+    <cus-floor-list #floorList [node]="activedNode"
+                    *ngIf="activedNode && activedNode.level == 1"
+                    (processTree)="processTree($event)"></cus-floor-list>
     <!-- 办公区-->
-    <cus-class-info [node]="activedNode" *ngIf="activedNode && activedNode.level == 3"
-                    (saveOk)="classSaveOk($event)"></cus-class-info>
+    <cus-class-list #classList [node]="activedNode"
+                    *ngIf="activedNode && activedNode.level == 2"
+                    (processTree)="processTree($event)"></cus-class-list>
   </nz-col>
 </nz-row>
 

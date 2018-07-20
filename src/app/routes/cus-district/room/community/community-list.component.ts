@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild, TemplateRef, Input} from '@angular/core';
-import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {NzMessageService, NzTreeNode} from 'ng-zorro-antd';
 import {_HttpClient} from '@delon/theme';
-import {tap, map} from 'rxjs/operators';
 import {
   SimpleTableComponent,
   SimpleTableColumn,
@@ -9,11 +8,17 @@ import {
 } from '@delon/abc';
 
 @Component({
-  selector: 'cus-company-list',
-  templateUrl: './company-list.component.html',
+  selector: 'cus-community-list',
+  templateUrl: './community-list.component.html',
 })
-export class CompanyListComponent implements OnInit {
-  url = `/api/company/getCompanyInfos`;
+export class CommunityListComponent implements OnInit {
+  @Input()
+  node: any;
+
+  @Output()
+  processTree: EventEmitter<any> = new EventEmitter<any>();
+
+  url = `/api/community/getCommunityInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -40,8 +45,8 @@ export class CompanyListComponent implements OnInit {
   @ViewChild('st') st: SimpleTableComponent;
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '公司编号', index: '_id'},
-    {title: '公司名称', index: 'name'},
+    {title: '社区编号', index: '_id'},
+    {title: '社区名称', index: 'name'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
     {title: '简介', index: 'introduction'},
@@ -59,12 +64,23 @@ export class CompanyListComponent implements OnInit {
   constructor(private http: _HttpClient, public msg: NzMessageService) {
   }
 
+  resetSelect(nzNode: NzTreeNode) {
+    this.node = nzNode
+    console.log("this.node", this.node)
+    this.args = {companyId: nzNode.origin.object._id}
+    this.st.pi = 1;
+    this.st.reload(this.args)
+  }
+
   getData() {
     this.st.pi = 1;
     this.st.reload()
   }
 
   ngOnInit() {
+    // this.args = {communityId: this.node.origin.object._id}
+    // this.st.pi = 1;
+    // this.st.reload(this.args)
   }
 
   checkboxChange(list: SimpleTableData[]) {
@@ -86,7 +102,7 @@ export class CompanyListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/company/delCompanyInfo', {_id: item._id})
+      .post('/api/community/delCommunityInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -104,20 +120,27 @@ export class CompanyListComponent implements OnInit {
       this.i = item;
     } else {
       this.i = {}
+      this.i.companyId = this.node.origin.object._id;
+      this.i.companyName = this.node.origin.object.name;
     }
-    console.log(this.i)
     this.isVisible = true;
   }
 
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/company/addCompanyInfo', this.i).subscribe(
+      .post('/api/community/addCommunityInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;
           this.isVisible = false;
           this.st.reload()
+          this.i._id = obj.id
+          this.processTree.emit({
+            title: this.i.name,
+            key: this.i._id,
+            object: this.i
+          });
           console.log(obj)
         } else {
           this.isConfirmLoading = false;
