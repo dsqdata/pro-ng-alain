@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
 
 import {SharedModule} from '@shared/shared.module';
 import {CusDistrictRoutingModule} from './cus-district-routing.module';
@@ -14,6 +13,7 @@ import {WcardComponent} from "./card/wcard/wcard.component";
 import {CommunityListComponent} from "./room/community/community-list.component";
 import {FloorListComponent} from "./room/floor/floor-list.component";
 import {ClassListComponent} from "./room/class/class-list.component";
+import {CusinfoListComponent} from "./cusinfo/cusinfo-list.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -22,6 +22,7 @@ const COMPONENTS_NOROUNT = [
   FloorListComponent,
   RoomListComponent,
   CompanyInfoComponent,
+  CusinfoListComponent,
   CommunityInfoComponent,
   FloorInfoComponent,
   ClassInfoComponent,

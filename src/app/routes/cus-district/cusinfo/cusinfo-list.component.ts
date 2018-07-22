@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {NzMessageService, NzTreeNode} from 'ng-zorro-antd';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NzMessageService} from 'ng-zorro-antd';
 import {_HttpClient} from '@delon/theme';
 import {
   SimpleTableComponent,
@@ -8,16 +8,11 @@ import {
 } from '@delon/abc';
 
 @Component({
-  selector: 'cus-class-list',
-  templateUrl: './class-list.component.html',
+  selector: 'cus-cusinfo-list',
+  templateUrl: './cusinfo-list.component.html',
 })
-export class ClassListComponent implements OnInit {
-  @Input()
-  node: any;
-  @Output()
-  processTree: EventEmitter<any> = new EventEmitter<any>();
-
-  url = `/api/class/getClassInfos`;
+export class CusinfoListComponent implements OnInit {
+  url = `/api/cusinfo/getCusinfoInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -44,8 +39,8 @@ export class ClassListComponent implements OnInit {
   @ViewChild('st') st: SimpleTableComponent;
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '办公室编号', index: '_id'},
-    {title: '办公室名称', index: 'name'},
+    {title: '客户编号', index: '_id'},
+    {title: '客户名称', index: 'name'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
     {title: '简介', index: 'introduction'},
@@ -63,23 +58,12 @@ export class ClassListComponent implements OnInit {
   constructor(private http: _HttpClient, public msg: NzMessageService) {
   }
 
-  resetSelect(nzNode: NzTreeNode) {
-    this.node = nzNode
-    console.log("this.node", this.node)
-    this.args = {floorId: nzNode.origin.object._id}
-    this.st.pi = 1;
-    this.st.reload(this.args)
-  }
-
   getData() {
     this.st.pi = 1;
     this.st.reload()
   }
 
   ngOnInit() {
-    this.args = {floorId: this.node.origin.object._id}
-    this.st.pi = 1;
-    this.st.reload(this.args)
   }
 
   checkboxChange(list: SimpleTableData[]) {
@@ -101,7 +85,7 @@ export class ClassListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/class/delClassInfo', {_id: item._id})
+      .post('/api/cusinfo/delCusinfoInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -118,33 +102,21 @@ export class ClassListComponent implements OnInit {
     if (item) {
       this.i = item;
     } else {
-      console.log(this.node)
       this.i = {}
-      this.i.floorId = this.node.origin.object._id;
-      this.i.floorName = this.node.origin.object.name;
-      this.i.companyId = this.node.getParentNode().getParentNode().origin.object._id;
-      this.i.companyName = this.node.getParentNode().getParentNode().origin.object.name;
-      this.i.communityId = this.node.getParentNode().origin.object._id;
-      this.i.communityName = this.node.getParentNode().origin.object.name;
     }
+    console.log(this.i)
     this.isVisible = true;
   }
 
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/class/addClassInfo', this.i).subscribe(
+      .post('/api/cusinfo/addCusinfoInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;
           this.isVisible = false;
           this.st.reload()
-          this.i._id = obj.id
-          this.processTree.emit({
-            title: this.i.name,
-            key: this.i._id,
-            object: this.i
-          });
           console.log(obj)
         } else {
           this.isConfirmLoading = false;

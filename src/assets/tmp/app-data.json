@@ -49,6 +49,12 @@
               "shortcut": true
             },
             {
+              "text": "cusinfo",
+              "link": "/cus/district/cusinfo-list",
+              "i18n": "cusinfo",
+              "shortcut": true
+            },
+            {
               "text": "room",
               "link": "/cus/district/room-list",
               "i18n": "room",
