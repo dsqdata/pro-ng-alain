@@ -59,6 +59,12 @@
               "link": "/cus/district/room-list",
               "i18n": "room",
               "shortcut": true
+            },
+            {
+              "text": "route",
+              "link": "/cus/district/route",
+              "i18n": "route",
+              "shortcut": true
             }
           ]
         },
@@ -78,6 +84,26 @@
               "text": "wcard",
               "link": "/cus/district/wcard",
               "i18n": "wcard",
+              "shortcut": true
+            }
+          ]
+        },
+        {
+          "text": "meter",
+          "i18n": "meter",
+          "icon": "anticon anticon-cloud-o",
+          "hideInBreadcrumb": true,
+          "children": [
+            {
+              "text": "emeter",
+              "link": "/cus/district/emeter",
+              "i18n": "emeter",
+              "shortcut": true
+            },
+            {
+              "text": "wmeter",
+              "link": "/cus/district/wmeter",
+              "i18n": "wmeter",
               "shortcut": true
             }
           ]
