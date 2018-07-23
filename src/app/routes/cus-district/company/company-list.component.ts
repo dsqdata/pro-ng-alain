@@ -13,7 +13,7 @@ import {
   templateUrl: './company-list.component.html',
 })
 export class CompanyListComponent implements OnInit {
-  url = `/api/company/getCompanyInfos`;
+  url = `api/company/getCompanyInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
