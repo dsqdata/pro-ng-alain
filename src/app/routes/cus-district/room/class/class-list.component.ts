@@ -17,7 +17,7 @@ export class ClassListComponent implements OnInit {
   @Output()
   processTree: EventEmitter<any> = new EventEmitter<any>();
 
-  url = `/api/class/getClassInfos`;
+  url = `api/class/getClassInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -101,7 +101,7 @@ export class ClassListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/class/delClassInfo', {_id: item._id})
+      .post('api/class/delClassInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -133,7 +133,7 @@ export class ClassListComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/class/addClassInfo', this.i).subscribe(
+      .post('api/class/addClassInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

@@ -17,7 +17,7 @@ export class FloorListComponent implements OnInit {
   @Output()
   processTree: EventEmitter<any> = new EventEmitter<any>();
 
-  url = `/api/floor/getFloorInfos`;
+  url = `api/floor/getFloorInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -101,7 +101,7 @@ export class FloorListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/floor/delFloorInfo', {_id: item._id})
+      .post('api/floor/delFloorInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -131,7 +131,7 @@ export class FloorListComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/floor/addFloorInfo', this.i).subscribe(
+      .post('api/floor/addFloorInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

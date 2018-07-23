@@ -12,7 +12,7 @@ import {
   templateUrl: './route.component.html',
 })
 export class RouteComponent implements OnInit {
-  url = `/api/route/getRouteInfos`;
+  url = `api/route/getRouteInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -85,7 +85,7 @@ export class RouteComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/route/delRouteInfo', {_id: item._id})
+      .post('api/route/delRouteInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -111,7 +111,7 @@ export class RouteComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/route/addRouteInfo', this.i).subscribe(
+      .post('api/route/addRouteInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

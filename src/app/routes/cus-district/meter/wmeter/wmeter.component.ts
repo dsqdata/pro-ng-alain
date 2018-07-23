@@ -12,7 +12,7 @@ import {
   templateUrl: './wmeter.component.html',
 })
 export class WmeterComponent implements OnInit {
-  url = `/api/cusinfo/getCusinfoInfos`;
+  url = `api/cusinfo/getCusinfoInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -85,7 +85,7 @@ export class WmeterComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/cusinfo/delCusinfoInfo', {_id: item._id})
+      .post('api/cusinfo/delCusinfoInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -111,7 +111,7 @@ export class WmeterComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/cusinfo/addCusinfoInfo', this.i).subscribe(
+      .post('api/cusinfo/addCusinfoInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

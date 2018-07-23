@@ -12,7 +12,7 @@ import {
   templateUrl: './emeter.component.html',
 })
 export class EmeterComponent implements OnInit {
-  url = `/api/emeter/getEmeterInfos`;
+  url = `api/emeter/getEmeterInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -128,7 +128,7 @@ export class EmeterComponent implements OnInit {
   getNodes(): any {
     var ar = []
     this.http
-      .post('/api/company/getCompanyInfoTree', {})
+      .post('api/company/getCompanyInfoTree', {})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -195,7 +195,7 @@ export class EmeterComponent implements OnInit {
       )
 
     this.http
-      .post('/api/cusinfo/getCusinfoInfos?ps=999&pi=1', {})
+      .post('api/cusinfo/getCusinfoInfos?ps=999&pi=1', {})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -229,7 +229,7 @@ export class EmeterComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/emeter/delEmeterInfo', {_id: item._id})
+      .post('api/emeter/delEmeterInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -259,7 +259,7 @@ export class EmeterComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/emeter/addEmeterInfo', this.i).subscribe(
+      .post('api/emeter/addEmeterInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

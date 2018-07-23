@@ -95,7 +95,7 @@ export class RoomListComponent implements OnInit {
   getNodes(): any {
     var ar = []
     this.http
-      .post('/api/company/getCompanyInfoTree', {})
+      .post('api/company/getCompanyInfoTree', {})
       .subscribe(
         (obj: any) => {
           console.log(obj)

@@ -18,7 +18,7 @@ export class CommunityListComponent implements OnInit {
   @Output()
   processTree: EventEmitter<any> = new EventEmitter<any>();
 
-  url = `/api/community/getCommunityInfos`;
+  url = `api/community/getCommunityInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -102,7 +102,7 @@ export class CommunityListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/community/delCommunityInfo', {_id: item._id})
+      .post('api/community/delCommunityInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -129,7 +129,7 @@ export class CommunityListComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/community/addCommunityInfo', this.i).subscribe(
+      .post('api/community/addCommunityInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;

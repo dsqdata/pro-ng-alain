@@ -86,7 +86,7 @@ export class CompanyListComponent implements OnInit {
 
   delIteml(item: any): void {
     this.http
-      .post('/api/company/delCompanyInfo', {_id: item._id})
+      .post('api/company/delCompanyInfo', {_id: item._id})
       .subscribe(
         (obj: any) => {
           if (obj.state == "success") {
@@ -112,7 +112,7 @@ export class CompanyListComponent implements OnInit {
   handleOk(): void {
     this.isConfirmLoading = true;
     this.http
-      .post('/api/company/addCompanyInfo', this.i).subscribe(
+      .post('api/company/addCompanyInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;
