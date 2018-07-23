@@ -8,7 +8,7 @@
   <nz-divider class="mb-lg"></nz-divider>
   <form #communityForm="ngForm">
     <button nz-button type="button">关闭</button>
-    <button nz-button [disabled]="!communityForm.form.valid || !communityForm.form.dirty" [nzLoading]="http.loading"
+    <button nz-button [disabled]="!communityForm.form.valid || !communityForm.form.dirty"
             [nzType]="'primary'">保存
     </button>
   </form>

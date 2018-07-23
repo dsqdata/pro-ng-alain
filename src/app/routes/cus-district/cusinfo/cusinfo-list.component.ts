@@ -98,7 +98,7 @@ export class CusinfoListComponent implements OnInit {
       )
   }
 
-  showModal(item: any): void {
+  showModal(item?: any): void {
     if (item) {
       this.i = item;
     } else {

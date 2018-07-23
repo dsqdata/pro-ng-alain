@@ -1,12 +1,5 @@
-import {Component, OnInit, ViewChild, TemplateRef, Input} from '@angular/core';
-import {NzMessageService, NzModalService} from 'ng-zorro-antd';
-import {_HttpClient} from '@delon/theme';
-import {tap, map} from 'rxjs/operators';
-import {
-  SimpleTableComponent,
-  SimpleTableColumn,
-  SimpleTableData,
-} from '@delon/abc';
+import {Component, OnInit, Input} from '@angular/core';
+import {NzMessageService,} from 'ng-zorro-antd';
 
 @Component({
   selector: 'cus-community-info',
@@ -18,7 +11,6 @@ export class CommunityInfoComponent implements OnInit {
 
   constructor(public msg: NzMessageService) {
   }
-
 
   ngOnInit() {
   }

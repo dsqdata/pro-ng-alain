@@ -6,7 +6,7 @@
     </button>
   </div>
   <nz-divider class="mb-lg"></nz-divider>
-  <form #communityForm="ngForm" >
+  <form #communityForm="ngForm">
     <nz-form-item class="mb-sm">
       <nz-form-label nzRequired nzSpan="4">公司编码</nz-form-label>
       <nz-form-control nzSpan="8">
@@ -22,7 +22,7 @@
 
     <button nz-button type="button" (click)="btnSaveCl()"><i class="anticon anticon-close"></i>
       <span>重置</span></button>
-    <button nz-button [disabled]="!communityForm.form.valid || !communityForm.form.dirty" [nzLoading]="http.loading"
+    <button nz-button [disabled]="!communityForm.form.valid || !communityForm.form.dirty"
             [nzType]="'primary'"><i class="anticon anticon-save"></i><span>保存</span>
     </button>
 

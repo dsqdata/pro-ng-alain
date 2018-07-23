@@ -16,7 +16,7 @@ export class FloorInfoComponent implements OnInit {
   @Input()
   info: any;
 
-  constructor(private http: _HttpClient, public msg: NzMessageService) {
+  constructor( public msg: NzMessageService) {
   }
 
 
