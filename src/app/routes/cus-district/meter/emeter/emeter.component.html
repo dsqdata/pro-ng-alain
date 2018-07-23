@@ -85,6 +85,9 @@
     <ng-template st-row="status" let-i>
       <nz-badge [nzStatus]="getStatusType(i.status)" [nzText]="getStatusText(i.status)"></nz-badge>
     </ng-template>
+    <ng-template st-row="bzstatus" let-i>
+      <nz-badge [nzStatus]="getBzStatusType(i.bzstatus)" [nzText]="getBzStatusText(i.bzstatus)"></nz-badge>
+    </ng-template>
   </simple-table>
 
 </nz-card>
@@ -102,7 +105,10 @@
         <nz-form-control nzSpan="8">
           <input nz-input [(ngModel)]="i._id" name="id" maxlength="30" readonly hidden/>
           <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id"/>
+          <nz-form-explain>请在电表中查找表号，并且唯一.</nz-form-explain>
         </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4" nzRequired> 办公室信息</nz-form-label>
         <nz-form-control nzSpan="8">
           <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
@@ -114,8 +120,6 @@
                        (ngModelChange)="onChanges($event)">
           </nz-cascader>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">客户信息</nz-form-label>
         <nz-form-control nzSpan="8">
           <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="cusinfoId._id" name="cusinfoId"
