@@ -245,7 +245,9 @@ export class EmeterComponent implements OnInit {
   showModal(item: any): void {
     if (item) {
       this.i = item;
-      this.cusinfoId = this.i.cusinfoId
+      if(this.i.cusinfoId){
+        this.cusinfoId = this.i.cusinfoId
+      }
     } else {
       this.i = {cusinfoId: {}, classAllPath: []}
       this.cusinfoId = {}
