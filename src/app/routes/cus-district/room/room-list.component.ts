@@ -72,6 +72,7 @@ import {ClassListComponent} from "./class/class-list.component";
 export class RoomListComponent implements OnInit {
   activedNode: NzTreeNode;
   nodes: Array<any>;
+  searchValue:string;
   @ViewChild('communityList') communityList: CommunityListComponent;
   @ViewChild('floorList') floorList: FloorListComponent;
   @ViewChild('classList') classList: ClassListComponent;

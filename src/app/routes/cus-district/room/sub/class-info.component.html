@@ -6,7 +6,7 @@
     </button>
   </div>
   <nz-divider class="mb-lg"></nz-divider>
-  <form #communityForm="ngForm" (ngSubmit)="handleOk()">
+  <form #communityForm="ngForm" >
     <nz-form-item class="mb-sm">
       <nz-form-label nzRequired nzSpan="4">公司编码</nz-form-label>
       <nz-form-control nzSpan="8">
@@ -26,7 +26,7 @@
             [nzType]="'primary'"><i class="anticon anticon-save"></i><span>保存</span>
     </button>
 
-    <button nz-button (click)="showModal()" [nzType]="'danger'" *ngIf="info && info.id">
+    <button nz-button [nzType]="'danger'" *ngIf="info && info.id">
       <i class="anticon anticon-delete"></i>
       <span>删除</span>
     </button>

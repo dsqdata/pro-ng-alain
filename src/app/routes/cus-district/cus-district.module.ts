@@ -17,6 +17,7 @@ import {CusinfoListComponent} from "./cusinfo/cusinfo-list.component";
 import {EmeterComponent} from "./meter/emeter/emeter.component";
 import {WmeterComponent} from "./meter/wmeter/wmeter.component";
 import {RouteComponent} from "./route/route.component";
+import {EcardOpenComponent} from "./card/ecard/open/ecard-open.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -32,6 +33,7 @@ const COMPONENTS_NOROUNT = [
   WmeterComponent,
   FloorInfoComponent,
   ClassInfoComponent,
+  EcardOpenComponent,
   EcardComponent,
   WcardComponent
 ];

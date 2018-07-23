@@ -20,7 +20,8 @@ export class ClassInfoComponent implements OnInit {
   @Output()
   deleOk: EventEmitter<any> = new EventEmitter<any>();
   info: any;
-  constructor(private http: _HttpClient, public msg: NzMessageService) {
+
+  constructor(public msg: NzMessageService) {
     console.log(this.info)
   }
 
