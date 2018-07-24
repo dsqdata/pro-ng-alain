@@ -39,7 +39,8 @@ export class RouteComponent implements OnInit {
   @ViewChild('st') st: SimpleTableComponent;
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '集中器编号', index: '_id'},
+    {title: '集中器编号', index: 'no'},
+    {title: '集中器地址', index: 'floorAllPath', format: (item: any) => this.getClassAllPathName(item)},
     {title: '集中器名称', index: 'name'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
@@ -55,12 +56,110 @@ export class RouteComponent implements OnInit {
   selectedRows: SimpleTableData[] = [];
   expandForm = false;
 
+  getClassAllPathName(item: any) {
+    if (item.floorAllPath) {
+      console.log(item.floorAllPath)
+      var companyId = item.floorAllPath[0]
+      var communityId = item.floorAllPath[1]
+      var floorId = item.floorAllPath[2]
+      return this.companyObject[companyId] + ","
+        + this.communityObject[communityId] + ","
+        + this.floorObject[floorId]
+    } else {
+      return ''
+    }
+  }
+
   constructor(private http: _HttpClient, public msg: NzMessageService) {
+    this.getNodes();
   }
 
   getData() {
     this.st.pi = 1;
     this.st.reload()
+  }
+
+  companyObject: any = {};
+  communityObject: any = {};
+  floorObject: any = {};
+  classObject: any = {};
+  nzOptions = [];
+
+  getNodes(): any {
+    var ar = []
+    this.http
+      .post('api/company/getCompanyInfoTree', {})
+      .subscribe(
+        (obj: any) => {
+          console.log("obj", obj)
+          if (obj.state == "success") {
+            var companyList = obj.companyList;
+            var communityList = obj.communityList;
+            var floorList = obj.floorList;
+            var classList = obj.classList;
+
+            for (var i in companyList) {
+              this.companyObject[companyList[i]._id] = companyList[i].name
+              var companyObj = {
+                label: companyList[i].name,
+                value: companyList[i]._id,
+                children: []
+              }
+
+              for (var j in communityList) {
+                this.communityObject[communityList[j]._id] = communityList[j].name
+                if (companyList[i]._id === communityList[j].companyId) {
+                  var communityObj = {
+                    label: communityList[j].name,
+                    value: communityList[j]._id,
+                    children: []
+                  }
+
+                  for (var k in floorList) {
+                    this.floorObject[floorList[k]._id] = floorList[k].name
+                    if (communityList[j]._id === floorList[k].communityId) {
+                      var floorObj = {
+                        label: floorList[k].name,
+                        value: floorList[k]._id,
+                        isLeaf: true
+                      }
+                      communityObj.children.push(floorObj)
+                      // for (var o in classList) {
+                      //   this.classObject[classList[o]._id] = classList[o].name
+                      //   if (floorList[k]._id === classList[o].floorId) {
+                      //     var classObj = {
+                      //       label: classList[o].name,
+                      //       value: classList[o]._id,
+                      //       isLeaf: true,
+                      //     }
+                      //     floorObj.children.push(classObj)
+                      //   }
+                      // }
+                      // if (floorObj.children.length > 0) {
+                      //   communityObj.children.push(floorObj)
+                      // }
+                    }
+                  }
+                  if (communityObj.children.length > 0) {
+                    companyObj.children.push(communityObj)
+                  }
+                }
+              }
+              if (companyObj.children.length > 0) {
+                ar.push(companyObj)
+              }
+            }
+            console.log(ar)
+            this.nzOptions = ar;
+          } else {
+            this.msg.error(obj.message)
+          }
+        }
+      )
+  }
+
+  public onChanges(values: any): void {
+    this.i.floorId = values[2]
   }
 
   ngOnInit() {

@@ -6,7 +6,7 @@
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
           <nz-form-label nzFor="_id">集中器编号</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="args._id" name="_id" placeholder="请输入" id="_id">
+            <input nz-input [(ngModel)]="args.no" name="_id" placeholder="请输入" id="no">
           </nz-form-control>
         </nz-form-item>
       </nz-col>
@@ -30,7 +30,8 @@
         <nz-form-item style="margin-bottom: 0px;margin-right: 16px;">
           <nz-form-label nzFor="status">记录状态</nz-form-label>
           <nz-form-control>
-            <nz-select [(ngModel)]="args.status" name="status" id="status" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
+            <nz-select [(ngModel)]="args.status" name="status" id="status" [nzPlaceHolder]="'请选择'"
+                       [nzShowSearch]="true">
               <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option>
             </nz-select>
           </nz-form-control>
@@ -74,7 +75,8 @@
   <!--</ng-template>-->
   <!--</simple-table>-->
 
-  <simple-table #st [data]="url" [reqMethod]="reqMethod" [extraParams]="args" [resReName]="{list: 'companyInfos' }" [total]="{list: 'total' }" [ps]="ps"
+  <simple-table #st [data]="url" [reqMethod]="reqMethod" [extraParams]="args" [resReName]="{list: 'companyInfos' }"
+                [total]="{list: 'total' }" [ps]="ps"
                 [columns]="columns">
     <ng-template st-row="status" let-i>
       <nz-badge [nzStatus]="getStatusType(i.status)" [nzText]="getStatusText(i.status)"></nz-badge>
@@ -94,11 +96,23 @@
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4"> 集中器编码</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
+          <input nz-input [(ngModel)]="i._id" name="id" maxlength="30" readonly hidden/>
+          <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id"/>
         </nz-form-control>
-        <nz-form-label nzSpan="4">集中器地址</nz-form-label>
+        <!--<nz-form-label nzSpan="4">集中器地址</nz-form-label>-->
+        <!--<nz-form-control nzSpan="8">-->
+        <!--<input nz-input [(ngModel)]="i.address" name="address" maxlength="50"/>-->
+        <!--</nz-form-control>-->
+        <nz-form-label nzSpan="4" nzRequired>集中器地址</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.address" name="address" maxlength="50"/>
+          <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
+          <nz-cascader #cascader name="floorAllPath"
+                       style="width: 100%;"
+                       [nzOptions]="nzOptions"
+                       [nzPlaceHolder]="'请选择'"
+                       [(ngModel)]="i.floorAllPath"
+                       (ngModelChange)="onChanges($event)">
+          </nz-cascader>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="mb-sm">
