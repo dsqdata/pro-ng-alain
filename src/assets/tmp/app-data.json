@@ -89,6 +89,20 @@
           ]
         },
         {
+          "text": "cusinfo",
+          "i18n": "cusinfo",
+          "icon": "anticon anticon-cloud-o",
+          "hideInBreadcrumb": true,
+          "children": [
+            {
+              "text": "cusinfo",
+              "link": "/cus/district/cusinfo-list",
+              "i18n": "cusinfo",
+              "shortcut": true
+            }
+          ]
+        },
+        {
           "text": "meter",
           "i18n": "meter",
           "icon": "anticon anticon-cloud-o",
