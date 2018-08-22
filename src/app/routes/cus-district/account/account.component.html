@@ -6,22 +6,19 @@
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
           <nz-form-label nzFor="_id">表号</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="args.no" name="no" placeholder="请输入" id="_id" >
+            <input nz-input [(ngModel)]="args.no" name="no" placeholder="请输入" id="_id">
           </nz-form-control>
         </nz-form-item>
       </nz-col>
       <nz-col nzMd="8" nzSm="24" style="margin-bottom: 10px;margin-top: 10px;">
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
-          <nz-form-label nzSpan="4"> 办公室信息</nz-form-label>
-          <nz-form-control nzSpan="8">
-            <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
-            <nz-cascader #cascaderSearch name="args.classAllPath"
-                         style="width: 100%;"
-                         [nzOptions]="nzOptions"
-                         [nzPlaceHolder]="'请选择'"
-                         [(ngModel)]="args.classAllPath"
-                         (ngModelChange)="onChanges($event)">
-            </nz-cascader>
+          <nz-form-label nzFor="name">客户名称</nz-form-label>
+          <nz-form-control>
+            <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="args.cusinfoId" name="cusinfoId"
+                       nzAllowClear>
+              <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
       </nz-col>
@@ -104,59 +101,16 @@
 
     <ng-template #modalContent>
       <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4" nzRequired> 表号</nz-form-label>
+        <nz-form-label nzSpan="4" nzRequired> 充值金额</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i._id" name="id" maxlength="30" readonly hidden/>
-          <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id" [disabled]="!editer"/>
-          <nz-form-explain>请在电表中查找表号，并且唯一.</nz-form-explain>
+          <input nz-input [(ngModel)]="i.balance" name="balance" maxlength="10" placeholder="充值金额"/>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4" nzRequired> 办公室信息</nz-form-label>
-        <nz-form-control nzSpan="8">
-          <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
-          <nz-cascader #cascader name="classId"
-                       style="width: 100%;"
-                       [nzOptions]="nzOptions"
-                       [nzPlaceHolder]="'请选择'"
-                       [nzDisabled]="!editer"
-                       [(ngModel)]="i.classAllPath"
-                       (ngModelChange)="onChanges($event)">
-          </nz-cascader>
-        </nz-form-control>
-        <!--<nz-form-label nzSpan="4">客户信息</nz-form-label>-->
-        <!--<nz-form-control nzSpan="8">-->
-          <!--<nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="cusinfoId._id" name="cusinfoId"-->
-                     <!--(ngModelChange)="cusinfoIdChange($event)">-->
-            <!--<nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">-->
-            <!--</nz-option>-->
-          <!--</nz-select>-->
-        <!--</nz-form-control>-->
-      </nz-form-item>
-      <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4">负责人</nz-form-label>
-        <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内" [disabled]="!editer"/>
-        </nz-form-control>
-        <nz-form-label nzSpan="4">联系电话</nz-form-label>
-        <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30" [disabled]="!editer"/>
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4">备注</nz-form-label>
-        <nz-form-control nzSpan="8">
-          <textarea nz-input row="4" [(ngModel)]="i.introduction" name="introduction" maxlength="300" [disabled]="!editer"
-                    placeholder="300字以内"></textarea>
-        </nz-form-control>
-      </nz-form-item>
-
     </ng-template>
 
     <ng-template #modalFooter>
       <button nz-button type="button" (click)="handleCancel()">关闭</button>
-      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'" *ngIf="editer"
+      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
               (click)="handleOk()">保存
       </button>
     </ng-template>

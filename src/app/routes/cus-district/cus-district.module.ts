@@ -18,6 +18,8 @@ import {EmeterComponent} from "./meter/emeter/emeter.component";
 import {WmeterComponent} from "./meter/wmeter/wmeter.component";
 import {RouteComponent} from "./route/route.component";
 import {EcardOpenComponent} from "./card/ecard/open/ecard-open.component";
+import {AccountComponent} from "./account/account.component";
+import {CusOpenAccountComponent} from "./meter/open/edit.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -35,7 +37,9 @@ const COMPONENTS_NOROUNT = [
   ClassInfoComponent,
   EcardOpenComponent,
   EcardComponent,
-  WcardComponent
+  WcardComponent,
+  AccountComponent,
+  CusOpenAccountComponent
 ];
 
 const COMPONENTS_EXPORTS = [

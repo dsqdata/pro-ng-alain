@@ -6,6 +6,7 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
+import {CusOpenAccountComponent} from "../open/edit.component";
 
 @Component({
   selector: 'cus-emeter',
@@ -52,6 +53,7 @@ export class EmeterComponent implements OnInit {
   i: any = {};
   cusinfoId: any = {};
   isVisible = false;
+  editer = false;
   isConfirmLoading = false;
 
   loading = false;
@@ -70,7 +72,7 @@ export class EmeterComponent implements OnInit {
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
     {title: '表号', index: 'no'},
-    {title: '客户', index: 'cusinfoId.name'},
+    // {title: '客户', index: 'cusinfoId.name'},
     {title: '办公室', index: 'classAllPath', format: (item: any) => this.getClassAllPathName(item)},
     {title: '开户状态', index: 'bzstatus', render: 'bzstatus'},
     {title: '记录状态', index: 'status', render: 'status'},
@@ -79,17 +81,21 @@ export class EmeterComponent implements OnInit {
     {
       title: '操作',
       buttons: [
+        {text: '查看', click: (item: any) => this.showDtlModal(item)},
         {
           text: '开户',
-          click: (item: any) => this.showModal(item),
+          type: 'modal',
+          component: CusOpenAccountComponent,
+          paramName: 'i',
+          click: () => this.st.reload(),
           iif: (item: any) => item.status === 1 && item.bzstatus === 0
         },
         {
-          text: '注销',
+          text: '销户',
           click: (item: any) => this.showModal(item),
           iif: (item: any) => item.status === 1 && item.bzstatus === 1
         },
-        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.status === 1},
+        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.status === 1 && item.bzstatus != 1},
         {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.status === 1 && item.bzstatus === 0}
       ],
     },
@@ -242,6 +248,20 @@ export class EmeterComponent implements OnInit {
       )
   }
 
+  showDtlModal(item?: any): void {
+    if (item) {
+      this.i = item;
+      if(this.i.cusinfoId){
+        this.cusinfoId = this.i.cusinfoId
+      }
+    } else {
+      this.i = {cusinfoId: {}, classAllPath: []}
+      this.cusinfoId = {}
+    }
+    this.editer = false;
+    this.isVisible = true;
+  }
+
   showModal(item?: any): void {
     if (item) {
       this.i = item;
@@ -251,13 +271,14 @@ export class EmeterComponent implements OnInit {
     } else {
       this.i = {cusinfoId: {}, classAllPath: []}
       this.cusinfoId = {}
-      // this.cascader.in
     }
+    this.editer = true;
     this.isVisible = true;
   }
 
   handleOk(): void {
     this.isConfirmLoading = true;
+    console.log(this.i)
     this.http
       .post('api/emeter/addEmeterInfo', this.i).subscribe(
       (obj: any) => {

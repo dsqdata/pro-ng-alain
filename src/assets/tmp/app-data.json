@@ -49,12 +49,6 @@
               "shortcut": true
             },
             {
-              "text": "cusinfo",
-              "link": "/cus/district/cusinfo-list",
-              "i18n": "cusinfo",
-              "shortcut": true
-            },
-            {
               "text": "room",
               "link": "/cus/district/room-list",
               "i18n": "room",
@@ -71,7 +65,7 @@
         {
           "text": "cardmg",
           "i18n": "cardmg",
-          "icon": "anticon anticon-cloud-o",
+          "icon": "anticon anticon-credit-card",
           "hideInBreadcrumb": true,
           "children": [
             {
@@ -91,7 +85,7 @@
         {
           "text": "cusinfo",
           "i18n": "cusinfo",
-          "icon": "anticon anticon-cloud-o",
+          "icon": "anticon anticon-link",
           "hideInBreadcrumb": true,
           "children": [
             {
@@ -99,13 +93,19 @@
               "link": "/cus/district/cusinfo-list",
               "i18n": "cusinfo",
               "shortcut": true
+            },
+            {
+              "text": "account",
+              "link": "/cus/district/account-list",
+              "i18n": "account",
+              "shortcut": true
             }
           ]
         },
         {
           "text": "meter",
           "i18n": "meter",
-          "icon": "anticon anticon-cloud-o",
+          "icon": "anticon anticon-dashboard",
           "hideInBreadcrumb": true,
           "children": [
             {

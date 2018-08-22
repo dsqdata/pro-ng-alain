@@ -79,6 +79,12 @@
     <ng-template st-row="status" let-i>
       <nz-badge [nzStatus]="getStatusType(i.status)" [nzText]="getStatusText(i.status)"></nz-badge>
     </ng-template>
+    <ng-template st-row="estatus" let-j>
+      <nz-badge [nzStatus]="getEStatusType(j.estatus)" [nzText]="getEStatusText(j.estatus)"></nz-badge>
+    </ng-template>
+    <ng-template st-row="wstatus" let-l>
+      <nz-badge [nzStatus]="getEStatusType(l.wstatus)" [nzText]="getEStatusText(l.wstatus)"></nz-badge>
+    </ng-template>
   </simple-table>
 
 </nz-card>
@@ -98,34 +104,34 @@
         </nz-form-control>
         <nz-form-label nzSpan="4">客户注册地址</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.address" name="address" maxlength="50"/>
+          <input nz-input [(ngModel)]="i.address" name="address" maxlength="50" [readonly]="!editer"/>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4" nzRequired>客户名称</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required/>
+          <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required [readonly]="!editer"/>
         </nz-form-control>
         <nz-form-label nzSpan="4">客户全称</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20"/>
+          <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20" [readonly]="!editer"/>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">负责人</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内"/>
+          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内" [readonly]="!editer"/>
         </nz-form-control>
         <nz-form-label nzSpan="4">联系电话</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30" [readonly]="!editer"/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">客户简介</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.introduction" name="introduction" maxlength="300" placeholder="300字以内"/>
+          <input nz-input [(ngModel)]="i.introduction" name="introduction" maxlength="300" placeholder="300字以内" [readonly]="!editer"/>
         </nz-form-control>
       </nz-form-item>
 
@@ -133,7 +139,7 @@
 
     <ng-template #modalFooter>
       <button nz-button type="button" (click)="handleCancel()">关闭</button>
-      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
+      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'" *ngIf="editer"
               (click)="handleOk()">保存
       </button>
     </ng-template>

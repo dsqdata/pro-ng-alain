@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import {NzCascaderComponent, NzMessageService} from 'ng-zorro-antd';
 import {_HttpClient} from '@delon/theme';
 import {
   SimpleTableComponent,
@@ -8,11 +8,11 @@ import {
 } from '@delon/abc';
 
 @Component({
-  selector: 'cus-cusinfo-list',
-  templateUrl: './cusinfo-list.component.html',
+  selector: 'cus-account',
+  templateUrl: './account.component.html',
 })
-export class CusinfoListComponent implements OnInit {
-  url = `api/cusinfo/getCusinfoInfos`;
+export class AccountComponent implements OnInit {
+  url = `api/account/getAccountInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
@@ -25,6 +25,20 @@ export class CusinfoListComponent implements OnInit {
   listOfOption = [];
   nzOptions = [];
 
+  public onChanges(values: any): void {
+    this.i.classId = values[3]
+  }
+
+  getBzStatusType(str: number): string {
+    const statusItem = this.bzstatus[str];
+    return statusItem.type;
+  }
+
+  getBzStatusText(str: number): string {
+    const statusItem = this.bzstatus[str];
+    return statusItem.text;
+  }
+
   getStatusType(str: number): string {
     const statusItem = this.status[str];
     return statusItem.type;
@@ -35,53 +49,38 @@ export class CusinfoListComponent implements OnInit {
     return statusItem.text;
   }
 
-  getEStatusType(str: number): string {
-    if (!str) {
-      str = 0;
-    }
-    const statusItem = this.estatus[str];
-    return statusItem.type;
-  }
-
-  getEStatusText(str: number): string {
-    if (!str) {
-      str = 0;
-    }
-    const statusItem = this.estatus[str];
-    return statusItem.text;
-  }
-
   i: any = {};
+  cusinfoId: any = {};
   isVisible = false;
-  editer = false;
   isConfirmLoading = false;
 
   loading = false;
-  status = [
-    {index: 0, text: '删除', value: false, type: 'error', checked: false},
-    {index: 1, text: '正常', value: false, type: 'success', checked: false},
-  ];
-  estatus = [
-    {index: 0, text: '未开户', value: false, type: 'error', checked: false},
+  bzstatus = [
+    {index: 0, text: '待开户', value: false, type: 'default', checked: false},
     {index: 1, text: '已开户', value: false, type: 'success', checked: false},
+    {index: 2, text: '已注销', value: false, type: 'error', checked: false},
+  ];
+  status = [
+    {index: 0, text: '未生效', value: false, type: 'error', checked: false},
+    {index: 1, text: '已开户', value: false, type: 'success', checked: false},
+    {index: 2, text: '已注销', value: false, type: 'error', checked: false},
   ];
   @ViewChild('st') st: SimpleTableComponent;
+  @ViewChild('cascader') cascader: NzCascaderComponent;
+
   columns: SimpleTableColumn[] = [
     {title: '', index: 'key', type: 'checkbox'},
-    {title: '客户编号', index: '_id'},
-    {title: '客户名称', index: 'name'},
-    {title: '办公室', index: 'classAllPath', format: (item: any) => this.getClassAllPathName(item)},
-    {title: '电表', index: 'estatus', render: 'estatus'},
-    {title: '水表', index: 'wstatus', render: 'wstatus'},
+    {title: '办公室', index: 'meterId.classAllPath', format: (item: any) => this.getClassAllPathName(item)},
+    {title: '表号', index: 'meterId.no'},
+    {title: '客户', index: 'cusinfoId.name'},
+    {title: '余额', index: 'balance'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
-    //{title: '简介', index: 'introduction'},
+    {title: '备注', index: 'introduction'},
     {
       title: '操作',
       buttons: [
-        {text: '查看', click: (item: any) => this.showDtlModal(item)},
-        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.estatus != 1},
-        {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1}
+        {text: '充值', click: (item: any) => this.showModal(item), iif: (item: any) => item.status === 1},
       ],
     },
   ];
@@ -93,20 +92,19 @@ export class CusinfoListComponent implements OnInit {
   }
 
   getClassAllPathName(item: any) {
-    console.log(item.classAllPath)
-    if (item.classAllPath && item.classAllPath.length != 0) {
-      var companyId = item.classAllPath[0]
-      var communityId = item.classAllPath[1]
-      var floorId = item.classAllPath[2]
-      var classId = item.classAllPath[3]
-      return this.companyObject[companyId] + ","
-        + this.communityObject[communityId] + ","
-        + this.floorObject[floorId] + ","
-        + this.classObject[classId]
-    } else {
-      return ''
-    }
+    var companyId = item.meterId.classAllPath[0]
+    var communityId = item.meterId.classAllPath[1]
+    var floorId = item.meterId.classAllPath[2]
+    var classId = item.meterId.classAllPath[3]
+    return this.companyObject[companyId] + ","
+      + this.communityObject[communityId] + ","
+      + this.floorObject[floorId] + ","
+      + this.classObject[classId]
+  }
 
+
+  cusinfoIdChange(data) {
+    this.i.cusinfoId._id = data;
   }
 
   getData() {
@@ -115,90 +113,6 @@ export class CusinfoListComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  checkboxChange(list: SimpleTableData[]) {
-    this.selectedRows = list;
-  }
-
-  remove() {
-    this.http
-      .delete('/rule', {nos: this.selectedRows.map(i => i.no).join(',')})
-      .subscribe(() => {
-        this.st.clearCheck();
-      });
-  }
-
-  reset(ls: any[]) {
-    for (const item of ls) item.value = false;
-    this.st.reload()
-  }
-
-  delIteml(item: any): void {
-    this.http
-      .post('api/cusinfo/delCusinfoInfo', {_id: item._id})
-      .subscribe(
-        (obj: any) => {
-          if (obj.state == "success") {
-            this.msg.info("删除成功")
-            this.st.reload()
-          } else {
-            this.msg.error(obj.message)
-          }
-        }
-      )
-  }
-
-  showDtlModal(item?: any): void {
-    if (item) {
-      this.i = item;
-    } else {
-      this.i = {}
-    }
-    console.log(this.i)
-    this.editer = false;
-    this.isVisible = true;
-  }
-
-  showModal(item?: any): void {
-    if (item) {
-      this.i = item;
-    } else {
-      this.i = {}
-    }
-    console.log(this.i)
-    this.editer = true;
-    this.isVisible = true;
-  }
-
-  handleOk(): void {
-    this.isConfirmLoading = true;
-    this.http
-      .post('api/cusinfo/addCusinfoInfo', this.i).subscribe(
-      (obj: any) => {
-        if (obj.state == "success") {
-          this.isConfirmLoading = false;
-          this.isVisible = false;
-          this.st.reload()
-          console.log(obj)
-        } else {
-          this.isConfirmLoading = false;
-          this.msg.error(obj.message)
-          console.log(obj)
-        }
-      }
-    )
-
-
-    // setTimeout(() => {
-    //   this.isVisible = false;
-    //   this.isConfirmLoading = false;
-    // }, 3000);
-  }
-
-  handleCancel(): void {
-    this.st.reload()
-    this.isVisible = false;
   }
 
   getNodes(): any {
@@ -284,6 +198,38 @@ export class CusinfoListComponent implements OnInit {
           }
         }
       )
+  }
+
+  checkboxChange(list: SimpleTableData[]) {
+    this.selectedRows = list;
+  }
+
+  reset(ls: any[]) {
+    for (const item of ls) item.value = false;
+    this.st.reload()
+  }
+
+  showModal(item?: any): void {
+    if (item) {
+      this.i = item;
+      if(this.i.cusinfoId){
+        this.cusinfoId = this.i.cusinfoId
+      }
+    } else {
+      this.i = {cusinfoId: {}, classAllPath: []}
+      this.cusinfoId = {}
+      // this.cascader.in
+    }
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+
+  }
+
+  handleCancel(): void {
+    this.st.reload()
+    this.isVisible = false;
   }
 
 }
