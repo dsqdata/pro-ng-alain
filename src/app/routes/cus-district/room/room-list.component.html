@@ -4,10 +4,15 @@
   <nz-col [nzSpan]="8">
     <nz-card [nzBordered]="false">
       <nz-row [nzGutter]="16">
-        <nz-col [nzSpan]="24">
+        <nz-col [nzSpan]="20">
           <nz-input-group [nzSuffix]="suffixIcon">
             <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue">
           </nz-input-group>
+          <ng-template #suffixIcon>
+            <i class="anticon anticon-search"></i>
+          </ng-template>
+        </nz-col>
+        <nz-col [nzSpan]="04">
           <ng-template #suffixIcon>
             <i class="anticon anticon-search"></i>
           </ng-template>
