@@ -15,6 +15,7 @@ export class AccountComponent implements OnInit {
   url = `api/account/getAccountInfos`;
   reqMethod = 'post'
   ps = 10;
+  balance = 0;
   args: any = {};
 
   companyObject: any = {};
@@ -76,7 +77,7 @@ export class AccountComponent implements OnInit {
     {title: '余额', index: 'balance'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
-    {title: '备注', index: 'introduction'},
+    //{title: '备注', index: 'introduction'},
     {
       title: '操作',
       buttons: [
@@ -210,9 +211,10 @@ export class AccountComponent implements OnInit {
   }
 
   showModal(item?: any): void {
+    this.balance = 0;
     if (item) {
       this.i = item;
-      if(this.i.cusinfoId){
+      if (this.i.cusinfoId) {
         this.cusinfoId = this.i.cusinfoId
       }
     } else {
@@ -224,7 +226,21 @@ export class AccountComponent implements OnInit {
   }
 
   handleOk(): void {
-
+    this.isConfirmLoading = true;
+    console.log(this.i)
+    this.http
+      .post('api/account/addBalanceInfo', {_id: this.i._id, balance: this.balance}).subscribe(
+      (obj: any) => {
+        if (obj.state == "success") {
+          this.isConfirmLoading = false;
+          this.isVisible = false;
+          this.st.reload()
+        } else {
+          this.isConfirmLoading = false;
+          this.msg.error(obj.message)
+        }
+      }
+    )
   }
 
   handleCancel(): void {

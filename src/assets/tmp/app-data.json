@@ -9,57 +9,24 @@
     "email": "cipchk@qq.com"
   },
   "menu": [
-    {
-      "text": "主导航",
-      "i18n": "main_navigation",
-      "group": true,
-      "hideInBreadcrumb": true,
+    { "text": "主导航", "i18n": "main_navigation",  "group": true,  "hideInBreadcrumb": true,
       "children": [
-        {
-          "text": "首页",
-          "link": "/dashboard/v1",
-          "i18n": "home",
-          "icon": "icon-grid"
-        },
-        {
-          "text": "快捷菜单",
-          "i18n": "shortcut",
-          "icon": "icon-rocket",
-          "shortcut_root": true,
-          "children": []
-        }
+        { "text": "首页", "link": "/dashboard/v1",  "i18n": "home",  "icon": "icon-grid" },
+        { "text": "快捷菜单", "i18n": "shortcut", "icon": "icon-rocket", "shortcut_root": true, "children": [] }
       ]
     },
     {
-      "text": "cus",
-      "i18n": "cus",
-      "group": true,
-      "hideInBreadcrumb": true,
+      "text": "cus", "i18n": "cus", "group": true, "hideInBreadcrumb": true,
       "children": [
-        {
-          "text": "district",
-          "i18n": "district",
-          "icon": "anticon anticon-cloud-o",
-          "hideInBreadcrumb": true,
+        { "text": "system", "i18n": "system", "icon": "anticon anticon-cloud-o", "hideInBreadcrumb": true,
           "children": [
-            {
-              "text": "company",
-              "link": "/cus/district/company-list",
-              "i18n": "company",
-              "shortcut": true
-            },
-            {
-              "text": "room",
-              "link": "/cus/district/room-list",
-              "i18n": "room",
-              "shortcut": true
-            },
-            {
-              "text": "route",
-              "link": "/cus/district/route",
-              "i18n": "route",
-              "shortcut": true
-            }
+            { "text": "route",  "link": "/cus/district/route", "i18n": "route", "shortcut": true  }
+          ]
+        },
+        { "text": "district", "i18n": "district", "icon": "anticon anticon-cloud-o", "hideInBreadcrumb": true,
+          "children": [
+            { "text": "company", "link": "/cus/district/company-list", "i18n": "company", "shortcut": true },
+            { "text": "room", "link": "/cus/district/room-list", "i18n": "room",  "shortcut": true }
           ]
         },
         {
@@ -124,8 +91,6 @@
         }
       ]
     },
-
-
     {
       "text": "More",
       "i18n": "more",

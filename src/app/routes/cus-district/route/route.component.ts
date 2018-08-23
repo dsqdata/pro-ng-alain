@@ -6,6 +6,7 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
+import {CommonService} from "../../../service/common.service";
 
 @Component({
   selector: 'cus-route',
@@ -16,6 +17,7 @@ export class RouteComponent implements OnInit {
   reqMethod = 'post'
   ps = 10;
   args: any = {};
+  node: any = {};
 
   getStatusType(str: number): string {
     const statusItem = this.status[str];
@@ -44,7 +46,7 @@ export class RouteComponent implements OnInit {
     {title: '集中器名称', index: 'name'},
     {title: '状态', index: 'status', render: 'status'},
     {title: '更新时间', index: 'date', type: 'date'},
-    {title: '简介', index: 'introduction'},
+    //{title: '简介', index: 'introduction'},
     {
       title: '操作',
       buttons: [
@@ -57,105 +59,33 @@ export class RouteComponent implements OnInit {
   expandForm = false;
 
   getClassAllPathName(item: any) {
-    if (item.floorAllPath) {
-      console.log(item.floorAllPath)
+    if (item.floorAllPath && this.node.companyObject) {
       var companyId = item.floorAllPath[0]
       var communityId = item.floorAllPath[1]
       var floorId = item.floorAllPath[2]
-      return this.companyObject[companyId] + ","
-        + this.communityObject[communityId] + ","
-        + this.floorObject[floorId]
+      return this.node.companyObject[companyId] + ","
+        + this.node.communityObject[communityId] + ","
+        + this.node.floorObject[floorId]
     } else {
       return ''
     }
   }
 
-  constructor(private http: _HttpClient, public msg: NzMessageService) {
-    this.getNodes();
+  constructor(private http: _HttpClient, public msg: NzMessageService, private service: CommonService) {
+    var that = this;
+    service.getFloorNodes(function (node) {
+      that.node = node;
+
+      console.log("oo",that.node)
+      if (that.st) {
+        that.st.reload()
+      }
+    })
   }
 
   getData() {
     this.st.pi = 1;
     this.st.reload()
-  }
-
-  companyObject: any = {};
-  communityObject: any = {};
-  floorObject: any = {};
-  classObject: any = {};
-  nzOptions = [];
-
-  getNodes(): any {
-    var ar = []
-    this.http
-      .post('api/company/getCompanyInfoTree', {})
-      .subscribe(
-        (obj: any) => {
-          console.log("obj", obj)
-          if (obj.state == "success") {
-            var companyList = obj.companyList;
-            var communityList = obj.communityList;
-            var floorList = obj.floorList;
-            var classList = obj.classList;
-
-            for (var i in companyList) {
-              this.companyObject[companyList[i]._id] = companyList[i].name
-              var companyObj = {
-                label: companyList[i].name,
-                value: companyList[i]._id,
-                children: []
-              }
-
-              for (var j in communityList) {
-                this.communityObject[communityList[j]._id] = communityList[j].name
-                if (companyList[i]._id === communityList[j].companyId) {
-                  var communityObj = {
-                    label: communityList[j].name,
-                    value: communityList[j]._id,
-                    children: []
-                  }
-
-                  for (var k in floorList) {
-                    this.floorObject[floorList[k]._id] = floorList[k].name
-                    if (communityList[j]._id === floorList[k].communityId) {
-                      var floorObj = {
-                        label: floorList[k].name,
-                        value: floorList[k]._id,
-                        isLeaf: true
-                      }
-                      communityObj.children.push(floorObj)
-                      // for (var o in classList) {
-                      //   this.classObject[classList[o]._id] = classList[o].name
-                      //   if (floorList[k]._id === classList[o].floorId) {
-                      //     var classObj = {
-                      //       label: classList[o].name,
-                      //       value: classList[o]._id,
-                      //       isLeaf: true,
-                      //     }
-                      //     floorObj.children.push(classObj)
-                      //   }
-                      // }
-                      // if (floorObj.children.length > 0) {
-                      //   communityObj.children.push(floorObj)
-                      // }
-                    }
-                  }
-                  if (communityObj.children.length > 0) {
-                    companyObj.children.push(communityObj)
-                  }
-                }
-              }
-              if (companyObj.children.length > 0) {
-                ar.push(companyObj)
-              }
-            }
-            console.log(ar)
-            this.nzOptions = ar;
-          } else {
-            this.msg.error(obj.message)
-          }
-        }
-      )
   }
 
   public onChanges(values: any): void {
@@ -203,7 +133,7 @@ export class RouteComponent implements OnInit {
     } else {
       this.i = {}
     }
-    console.log(this.i)
+    console.log(this.node)
     this.isVisible = true;
   }
 
@@ -224,12 +154,6 @@ export class RouteComponent implements OnInit {
         }
       }
     )
-
-
-    // setTimeout(() => {
-    //   this.isVisible = false;
-    //   this.isConfirmLoading = false;
-    // }, 3000);
   }
 
   handleCancel(): void {

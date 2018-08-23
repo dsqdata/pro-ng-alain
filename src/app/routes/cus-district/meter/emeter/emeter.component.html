@@ -17,7 +17,7 @@
             <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
             <nz-cascader #cascaderSearch name="args.classAllPath"
                          style="width: 100%;"
-                         [nzOptions]="nzOptions"
+                         [nzOptions]="node.nzOptions"
                          [nzPlaceHolder]="'请选择'"
                          [(ngModel)]="args.classAllPath"
                          (ngModelChange)="onChanges($event)">
@@ -117,10 +117,23 @@
           <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
           <nz-cascader #cascader name="classId"
                        style="width: 100%;"
-                       [nzOptions]="nzOptions"
+                       [nzOptions]="node.nzOptions"
                        [nzPlaceHolder]="'请选择'"
                        [nzDisabled]="!editer"
                        [(ngModel)]="i.classAllPath"
+                       (ngModelChange)="onChanges($event)">
+          </nz-cascader>
+        </nz-form-control>
+
+        <nz-form-label nzSpan="4" nzRequired> 网关信息</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
+          <nz-cascader #cascader name="routeId"
+                       style="width: 100%;"
+                       [nzOptions]="nzOptions"
+                       [nzPlaceHolder]="'请选择'"
+                       [nzDisabled]="!editer"
+                       [(ngModel)]="i.routeAllPath"
                        (ngModelChange)="onChanges($event)">
           </nz-cascader>
         </nz-form-control>

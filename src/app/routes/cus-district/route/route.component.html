@@ -99,16 +99,11 @@
           <input nz-input [(ngModel)]="i._id" name="id" maxlength="30" readonly hidden/>
           <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id"/>
         </nz-form-control>
-        <!--<nz-form-label nzSpan="4">集中器地址</nz-form-label>-->
-        <!--<nz-form-control nzSpan="8">-->
-        <!--<input nz-input [(ngModel)]="i.address" name="address" maxlength="50"/>-->
-        <!--</nz-form-control>-->
         <nz-form-label nzSpan="4" nzRequired>集中器地址</nz-form-label>
         <nz-form-control nzSpan="8">
-          <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
           <nz-cascader #cascader name="floorAllPath"
                        style="width: 100%;"
-                       [nzOptions]="nzOptions"
+                       [nzOptions]="node.nzOptions"
                        [nzPlaceHolder]="'请选择'"
                        [(ngModel)]="i.floorAllPath"
                        (ngModelChange)="onChanges($event)">
@@ -125,6 +120,33 @@
           <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20"/>
         </nz-form-control>
       </nz-form-item>
+
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4">楼层中序号</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.floorNo" name="floorNo" maxlength="10"/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">网关模式</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <nz-select style="width: 100%;" [(ngModel)]="i.routeType" nzAllowClear nzPlaceHolder="请选择网关模式"
+                     name="routeType">
+            <nz-option nzValue="tcpServer" nzLabel="tcpServer模式"></nz-option>
+            <nz-option nzValue="tcpClient" nzLabel="tcpClient模式"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="mb-sm">
+        <nz-form-label nzSpan="4">IP</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.ip" name="ip" maxlength="10"/>
+        </nz-form-control>
+        <nz-form-label nzSpan="4">端口</nz-form-label>
+        <nz-form-control nzSpan="8">
+          <input nz-input [(ngModel)]="i.port" name="port" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">负责人</nz-form-label>
         <nz-form-control nzSpan="8">

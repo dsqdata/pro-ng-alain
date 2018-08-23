@@ -73,11 +73,12 @@
   "ecard": "电卡管理",
   "wcard": "水卡管理",
   "card": "卡片管理",
-  "community":"社区管理",
-  "cusinfo":"客户管理",
-  "meter":"表管理",
-  "emeter":"电表管理",
-  "wmeter":"水表管理",
-  "route":"集中器管理",
-  "account":"账户管理"
+  "community": "社区管理",
+  "cusinfo": "客户管理",
+  "meter": "表管理",
+  "emeter": "电表管理",
+  "wmeter": "水表管理",
+  "route": "集中器管理",
+  "account": "账户管理",
+  "system": "系统管理"
 }

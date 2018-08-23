@@ -20,6 +20,7 @@ import {RouteComponent} from "./route/route.component";
 import {EcardOpenComponent} from "./card/ecard/open/ecard-open.component";
 import {AccountComponent} from "./account/account.component";
 import {CusOpenAccountComponent} from "./meter/open/edit.component";
+import {CommonService} from "../../service/common.service";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -59,6 +60,7 @@ const COMPONENTS_EXPORTS = [
   ],
   exports: COMPONENTS_EXPORTS,
   entryComponents: COMPONENTS_NOROUNT,
+  providers: [CommonService]
 })
 export class CusDistrictModule {
 }

@@ -54,23 +54,23 @@
   </form>
 </nz-card>
 <nz-card [nzBordered]="false">
-  <div nz-row>
-    <button nz-button (click)="showModal()" [nzType]="'primary'">
-      <i class="anticon anticon-plus"></i>
-      <span>新建</span>
-    </button>
-    <ng-container *ngIf="selectedRows.length > 0">
-      <nz-dropdown [nzPlacement]="'bottomLeft'">
-        <button nz-button nz-dropdown class="ml-sm">
-          更多操作
-          <i class="anticon anticon-down"></i>
-        </button>
-        <ul nz-menu>
-          <li nz-menu-item (click)="remove()">删除</li>
-        </ul>
-      </nz-dropdown>
-    </ng-container>
-  </div>
+  <!--<div nz-row>-->
+    <!--<button nz-button (click)="showModal()" [nzType]="'primary'">-->
+      <!--<i class="anticon anticon-plus"></i>-->
+      <!--<span>新建</span>-->
+    <!--</button>-->
+    <!--<ng-container *ngIf="selectedRows.length > 0">-->
+      <!--<nz-dropdown [nzPlacement]="'bottomLeft'">-->
+        <!--<button nz-button nz-dropdown class="ml-sm">-->
+          <!--更多操作-->
+          <!--<i class="anticon anticon-down"></i>-->
+        <!--</button>-->
+        <!--<ul nz-menu>-->
+          <!--<li nz-menu-item (click)="remove()">删除</li>-->
+        <!--</ul>-->
+      <!--</nz-dropdown>-->
+    <!--</ng-container>-->
+  <!--</div>-->
   <nz-divider class="mb-lg"></nz-divider>
   <!--<simple-table #st [columns]="columns" [data]="data" [loading]="loading" (checkboxChange)="checkboxChange($event)"-->
   <!--(filterChange)="getData()" [showPagination]="showPagination" [total]="total">-->
@@ -103,7 +103,7 @@
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4" nzRequired> 充值金额</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.balance" name="balance" maxlength="10" placeholder="充值金额"/>
+          <input nz-input [(ngModel)]="balance" name="balance" maxlength="10" placeholder="充值金额"/>
         </nz-form-control>
       </nz-form-item>
     </ng-template>

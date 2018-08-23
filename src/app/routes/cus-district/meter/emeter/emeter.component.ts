@@ -7,24 +7,21 @@ import {
   SimpleTableData,
 } from '@delon/abc';
 import {CusOpenAccountComponent} from "../open/edit.component";
+import {CommonService} from "../../../../service/common.service";
+import {switchMap} from "rxjs/internal/operators";
+import {BaseComponent} from "../../../base/base.component";
 
 @Component({
   selector: 'cus-emeter',
   templateUrl: './emeter.component.html',
 })
-export class EmeterComponent implements OnInit {
+export class EmeterComponent extends BaseComponent implements OnInit {
   url = `api/emeter/getEmeterInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
-
-  companyObject: any = {};
-  communityObject: any = {};
-  floorObject: any = {};
-  classObject: any = {};
-
+  node: any = {};
   listOfOption = [];
-  nzOptions = [];
 
   public onChanges(values: any): void {
     this.i.classId = values[3]
@@ -95,16 +92,32 @@ export class EmeterComponent implements OnInit {
           click: (item: any) => this.showModal(item),
           iif: (item: any) => item.status === 1 && item.bzstatus === 1
         },
-        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.status === 1 && item.bzstatus != 1},
-        {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.status === 1 && item.bzstatus === 0}
+        {
+          text: '编辑',
+          click: (item: any) => this.showModal(item),
+          iif: (item: any) => item.status === 1 && item.bzstatus != 1
+        },
+        {
+          text: '删除',
+          type: 'del',
+          click: (item: any) => this.delIteml(item),
+          iif: (item: any) => item.status === 1 && item.bzstatus === 0
+        }
       ],
     },
   ];
   selectedRows: SimpleTableData[] = [];
   expandForm = false;
 
-  constructor(private http: _HttpClient, public msg: NzMessageService) {
-    this.getNodes();
+  constructor(private http: _HttpClient, public msg: NzMessageService, private service: CommonService) {
+    super()
+    var that = this;
+    service.getClassNodes(function (node) {
+      that.node = node;
+      if (that.st) {
+        that.st.reload()
+      }
+    })
   }
 
   getClassAllPathName(item: any) {
@@ -112,10 +125,15 @@ export class EmeterComponent implements OnInit {
     var communityId = item.classAllPath[1]
     var floorId = item.classAllPath[2]
     var classId = item.classAllPath[3]
-    return this.companyObject[companyId] + ","
-      + this.communityObject[communityId] + ","
-      + this.floorObject[floorId] + ","
-      + this.classObject[classId]
+    if (this.node.companyObject) {
+      return this.node.companyObject[companyId] + ","
+        + this.node.communityObject[communityId] + ","
+        + this.node.floorObject[floorId] + ","
+        + this.node.classObject[classId]
+    } else {
+      return ''
+    }
+
   }
 
 
@@ -131,90 +149,6 @@ export class EmeterComponent implements OnInit {
   ngOnInit() {
   }
 
-  getNodes(): any {
-    var ar = []
-    this.http
-      .post('api/company/getCompanyInfoTree', {})
-      .subscribe(
-        (obj: any) => {
-          if (obj.state == "success") {
-            var companyList = obj.companyList;
-            var communityList = obj.communityList;
-            var floorList = obj.floorList;
-            var classList = obj.classList;
-
-            for (var i in companyList) {
-              this.companyObject[companyList[i]._id] = companyList[i].name
-              var companyObj = {
-                label: companyList[i].name,
-                value: companyList[i]._id,
-                children: []
-              }
-
-              for (var j in communityList) {
-                this.communityObject[communityList[j]._id] = communityList[j].name
-                if (companyList[i]._id === communityList[j].companyId) {
-                  var communityObj = {
-                    label: communityList[j].name,
-                    value: communityList[j]._id,
-                    children: []
-                  }
-
-                  for (var k in floorList) {
-                    this.floorObject[floorList[k]._id] = floorList[k].name
-                    if (communityList[j]._id === floorList[k].communityId) {
-                      var floorObj = {
-                        label: floorList[k].name,
-                        value: floorList[k]._id,
-                        children: []
-                      }
-                      for (var o in classList) {
-                        this.classObject[classList[o]._id] = classList[o].name
-                        if (floorList[k]._id === classList[o].floorId) {
-                          var classObj = {
-                            label: classList[o].name,
-                            value: classList[o]._id,
-                            isLeaf: true,
-                          }
-                          floorObj.children.push(classObj)
-                        }
-                      }
-                      if (floorObj.children.length > 0) {
-                        communityObj.children.push(floorObj)
-                      }
-                    }
-                  }
-                  if (communityObj.children.length > 0) {
-                    companyObj.children.push(communityObj)
-                  }
-                }
-              }
-              if (companyObj.children.length > 0) {
-                ar.push(companyObj)
-              }
-            }
-            this.nzOptions = ar;
-          } else {
-            this.msg.error(obj.message)
-          }
-        }
-      )
-
-    this.http
-      .post('api/cusinfo/getCusinfoInfos?ps=999&pi=1', {})
-      .subscribe(
-        (obj: any) => {
-          if (obj.state == "success") {
-            this.listOfOption = []
-            for (var i in obj.companyInfos) {
-              this.listOfOption.push({label: obj.companyInfos[i].name, value: obj.companyInfos[i]._id})
-            }
-          } else {
-            this.msg.error(obj.message)
-          }
-        }
-      )
-  }
 
   checkboxChange(list: SimpleTableData[]) {
     this.selectedRows = list;
@@ -251,7 +185,7 @@ export class EmeterComponent implements OnInit {
   showDtlModal(item?: any): void {
     if (item) {
       this.i = item;
-      if(this.i.cusinfoId){
+      if (this.i.cusinfoId) {
         this.cusinfoId = this.i.cusinfoId
       }
     } else {
@@ -265,7 +199,7 @@ export class EmeterComponent implements OnInit {
   showModal(item?: any): void {
     if (item) {
       this.i = item;
-      if(this.i.cusinfoId){
+      if (this.i.cusinfoId) {
         this.cusinfoId = this.i.cusinfoId
       }
     } else {
@@ -292,12 +226,6 @@ export class EmeterComponent implements OnInit {
         }
       }
     )
-
-
-    // setTimeout(() => {
-    //   this.isVisible = false;
-    //   this.isConfirmLoading = false;
-    // }, 3000);
   }
 
   handleCancel(): void {
