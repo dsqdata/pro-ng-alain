@@ -6,6 +6,8 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
+import {debounceTime, map, switchMap} from "rxjs/internal/operators";
+import {BehaviorSubject, Observable} from "rxjs/index";
 
 @Component({
   selector: 'cus-account',
@@ -26,9 +28,22 @@ export class AccountComponent implements OnInit {
   listOfOption = [];
   nzOptions = [];
 
+  randomUserUrl = 'api/cusinfo/getCusinfoInfos?ps=5&name=';
+  searchChange$ = new BehaviorSubject('');
+  optionList = [];
+  selectedUser;
+  isLoading = false;
+
+  onSearch(value: string): void {
+    this.isLoading = true;
+    this.randomUserUrl = this.randomUserUrl.split('&')[0] + "&name=" + value
+    this.searchChange$.next(value);
+  }
+
   public onChanges(values: any): void {
     this.i.classId = values[3]
   }
+
 
   getBzStatusType(str: number): string {
     const statusItem = this.bzstatus[str];
@@ -114,6 +129,15 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
+    const getRandomNameList = (name: string) => this.http.post(`${this.randomUserUrl}`)
+      .pipe(map((res: any) => {
+        return res.companyInfos
+      }))
+    const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
+    optionList$.subscribe(data => {
+      this.optionList = data;
+      this.isLoading = false;
+    });
   }
 
   getNodes(): any {

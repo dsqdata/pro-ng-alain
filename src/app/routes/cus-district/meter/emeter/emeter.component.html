@@ -6,7 +6,7 @@
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
           <nz-form-label nzFor="_id">表号</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="args.no" name="no" placeholder="请输入" id="_id" >
+            <input nz-input [(ngModel)]="args.no" name="no" placeholder="请输入" id="_id">
           </nz-form-control>
         </nz-form-item>
       </nz-col>
@@ -128,28 +128,36 @@
         <nz-form-label nzSpan="4" nzRequired> 网关信息</nz-form-label>
         <nz-form-control nzSpan="8">
           <!--<input nz-input [(ngModel)]="i.classId" name="classId" maxlength="30"/>-->
-          <nz-cascader #cascader name="routeId"
-                       style="width: 100%;"
-                       [nzOptions]="nzOptions"
-                       [nzPlaceHolder]="'请选择'"
-                       [nzDisabled]="!editer"
-                       [(ngModel)]="i.routeAllPath"
-                       (ngModelChange)="onChanges($event)">
-          </nz-cascader>
+          <nz-select name="routeId" style="width: 100%;"
+                     [nzDisabled]="!editer"
+                     [(ngModel)]="i.routeId"
+                     nzPlaceHolder="选择网关信息"
+                     nzAllowClear
+                     nzShowSearch
+                     [nzServerSearch]="true"
+                     (nzOnSearch)="onSearch($event)" required>
+            <ng-container *ngFor="let o of optionList">
+              <nz-option *ngIf="!isLoading" [nzValue]="o._id" [nzLabel]="o.name"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i> 加载更多...
+            </nz-option>
+          </nz-select>
         </nz-form-control>
         <!--<nz-form-label nzSpan="4">客户信息</nz-form-label>-->
         <!--<nz-form-control nzSpan="8">-->
-          <!--<nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="cusinfoId._id" name="cusinfoId"-->
-                     <!--(ngModelChange)="cusinfoIdChange($event)">-->
-            <!--<nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">-->
-            <!--</nz-option>-->
-          <!--</nz-select>-->
+        <!--<nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="cusinfoId._id" name="cusinfoId"-->
+        <!--(ngModelChange)="cusinfoIdChange($event)">-->
+        <!--<nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">-->
+        <!--</nz-option>-->
+        <!--</nz-select>-->
         <!--</nz-form-control>-->
       </nz-form-item>
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">负责人</nz-form-label>
         <nz-form-control nzSpan="8">
-          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内" [disabled]="!editer"/>
+          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内"
+                 [disabled]="!editer"/>
         </nz-form-control>
         <nz-form-label nzSpan="4">联系电话</nz-form-label>
         <nz-form-control nzSpan="8">
@@ -160,7 +168,8 @@
       <nz-form-item class="mb-sm">
         <nz-form-label nzSpan="4">备注</nz-form-label>
         <nz-form-control nzSpan="8">
-          <textarea nz-input row="4" [(ngModel)]="i.introduction" name="introduction" maxlength="300" [disabled]="!editer"
+          <textarea nz-input row="4" [(ngModel)]="i.introduction" name="introduction" maxlength="300"
+                    [disabled]="!editer"
                     placeholder="300字以内"></textarea>
         </nz-form-control>
       </nz-form-item>
@@ -169,7 +178,8 @@
 
     <ng-template #modalFooter>
       <button nz-button type="button" (click)="handleCancel()">关闭</button>
-      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'" *ngIf="editer"
+      <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
+              *ngIf="editer"
               (click)="handleOk()">保存
       </button>
     </ng-template>

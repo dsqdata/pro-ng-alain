@@ -94,10 +94,10 @@
 
     <ng-template #modalContent>
       <nz-form-item class="mb-sm">
-        <nz-form-label nzSpan="4"> 集中器编码</nz-form-label>
+        <nz-form-label nzSpan="4" nzRequired> 集中器编码</nz-form-label>
         <nz-form-control nzSpan="8">
           <input nz-input [(ngModel)]="i._id" name="id" maxlength="30" readonly hidden/>
-          <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id"/>
+          <input nz-input [(ngModel)]="i.no" name="no" maxlength="30" [readonly]="i._id" required/>
         </nz-form-control>
         <nz-form-label nzSpan="4" nzRequired>集中器地址</nz-form-label>
         <nz-form-control nzSpan="8">

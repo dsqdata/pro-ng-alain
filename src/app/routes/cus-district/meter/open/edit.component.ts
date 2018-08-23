@@ -19,12 +19,13 @@ export class CusOpenAccountComponent implements OnInit {
 
   onSearch(value: string): void {
     this.isLoading = true;
+    this.randomUserUrl = this.randomUserUrl.split('&')[0] + "&name=" + value
     this.searchChange$.next(value);
   }
 
   constructor(private modal: NzModalRef,
               public msgSrv: NzMessageService,
-              public http: _HttpClient,) {
+              public http: _HttpClient) {
   }
 
   ngOnInit() {

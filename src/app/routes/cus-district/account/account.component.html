@@ -14,9 +14,12 @@
         <nz-form-item style="margin-bottom: 0px; margin-right: 16px;">
           <nz-form-label nzFor="name">客户名称</nz-form-label>
           <nz-form-control>
-            <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="args.cusinfoId" name="cusinfoId"
-                       nzAllowClear>
-              <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
+            <nz-select name="custinfo" style="width: 100%;" [(ngModel)]="args.cusinfoId" nzPlaceHolder="选择客户" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" required>
+              <ng-container *ngFor="let o of optionList">
+                <nz-option *ngIf="!isLoading" [nzValue]="o._id" [nzLabel]="o.name"></nz-option>
+              </ng-container>
+              <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                <i class="anticon anticon-loading anticon-spin loading-icon"></i>  加载更多...
               </nz-option>
             </nz-select>
           </nz-form-control>

@@ -79,9 +79,9 @@ export class CusinfoListComponent implements OnInit {
     {
       title: '操作',
       buttons: [
-        {text: '查看', click: (item: any) => this.showDtlModal(item)},
         {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.estatus != 1},
-        {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1}
+        {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1},
+        {text: '查看', click: (item: any) => this.showDtlModal(item)},
       ],
     },
   ];

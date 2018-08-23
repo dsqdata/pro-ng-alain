@@ -8,20 +8,31 @@ import {
 } from '@delon/abc';
 import {CusOpenAccountComponent} from "../open/edit.component";
 import {CommonService} from "../../../../service/common.service";
-import {switchMap} from "rxjs/internal/operators";
+import {debounceTime, map, switchMap} from "rxjs/internal/operators";
 import {BaseComponent} from "../../../base/base.component";
+import {BehaviorSubject, Observable} from "rxjs/index";
 
 @Component({
   selector: 'cus-emeter',
   templateUrl: './emeter.component.html',
 })
 export class EmeterComponent extends BaseComponent implements OnInit {
+  randomUserUrl = 'api/route/getRouteInfos?ps=5';
   url = `api/emeter/getEmeterInfos`;
   reqMethod = 'post'
   ps = 10;
   args: any = {};
   node: any = {};
-  listOfOption = [];
+  searchChange$ = new BehaviorSubject('');
+  routeOptions = [];
+  optionList = [];
+  isLoading = false;
+
+  onSearch(value: string): void {
+    this.isLoading = true;
+    this.randomUserUrl = this.randomUserUrl.split('&')[0] + "&name=" + value
+    this.searchChange$.next(value);
+  }
 
   public onChanges(values: any): void {
     this.i.classId = values[3]
@@ -78,20 +89,20 @@ export class EmeterComponent extends BaseComponent implements OnInit {
     {
       title: '操作',
       buttons: [
-        {text: '查看', click: (item: any) => this.showDtlModal(item)},
-        {
-          text: '开户',
-          type: 'modal',
-          component: CusOpenAccountComponent,
-          paramName: 'i',
-          click: () => this.st.reload(),
-          iif: (item: any) => item.status === 1 && item.bzstatus === 0
-        },
-        {
-          text: '销户',
-          click: (item: any) => this.showModal(item),
-          iif: (item: any) => item.status === 1 && item.bzstatus === 1
-        },
+
+        // {
+        //   text: '开户',
+        //   type: 'modal',
+        //   component: CusOpenAccountComponent,
+        //   paramName: 'i',
+        //   click: () => this.st.reload(),
+        //   iif: (item: any) => item.status === 1 && item.bzstatus === 0
+        // },
+        // {
+        //   text: '销户',
+        //   click: (item: any) => this.showModal(item),
+        //   iif: (item: any) => item.status === 1 && item.bzstatus === 1
+        // },
         {
           text: '编辑',
           click: (item: any) => this.showModal(item),
@@ -102,7 +113,8 @@ export class EmeterComponent extends BaseComponent implements OnInit {
           type: 'del',
           click: (item: any) => this.delIteml(item),
           iif: (item: any) => item.status === 1 && item.bzstatus === 0
-        }
+        },
+        {text: '查看', click: (item: any) => this.showDtlModal(item)}
       ],
     },
   ];
@@ -136,7 +148,6 @@ export class EmeterComponent extends BaseComponent implements OnInit {
 
   }
 
-
   cusinfoIdChange(data) {
     this.i.cusinfoId._id = data;
   }
@@ -147,6 +158,16 @@ export class EmeterComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    const getRandomNameList = (name: string) => this.http.post(`${this.randomUserUrl}`)
+      .pipe(map((res: any) => {
+        return res.companyInfos
+      }))
+    const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
+    optionList$.subscribe(data => {
+      this.optionList = data;
+      this.isLoading = false;
+    });
+
   }
 
 
