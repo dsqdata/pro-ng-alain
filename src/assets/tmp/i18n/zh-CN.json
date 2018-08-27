@@ -82,5 +82,6 @@
   "account": "销售管理",
   "eaccount": "售电管理",
   "esaccount": "售电查询",
+  "ecost": "电费配置",
   "system": "系统管理"
 }

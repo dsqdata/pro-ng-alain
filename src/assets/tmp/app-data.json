@@ -55,6 +55,12 @@
               "shortcut": true
             },
             {
+              "text": "ecost",
+              "link": "/cus/district/ecost",
+              "i18n": "ecost",
+              "shortcut": true
+            },
+            {
               "text": "wmeter",
               "link": "/cus/district/wmeter",
               "i18n": "wmeter",

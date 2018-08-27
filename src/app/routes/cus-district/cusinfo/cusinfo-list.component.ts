@@ -6,6 +6,7 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
+import {EopenComponent} from "./eopen/eopen.component";
 
 @Component({
   selector: 'cus-cusinfo-list',
@@ -79,6 +80,14 @@ export class CusinfoListComponent implements OnInit {
     {
       title: '操作',
       buttons: [
+        {
+          text: '电表开户',
+          type: 'modal',
+          component: EopenComponent,
+          paramName: 'i',
+          click: () => this.st.reload(),
+         // iif: (item: any) => item.status === 1 && item.bzstatus === 0
+        },
         {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.estatus != 1},
         {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1},
         {text: '查看', click: (item: any) => this.showDtlModal(item)},

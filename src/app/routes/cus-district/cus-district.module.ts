@@ -21,6 +21,8 @@ import {EcardOpenComponent} from "./card/ecard/open/ecard-open.component";
 import {AccountComponent} from "./account/account.component";
 import {CusOpenAccountComponent} from "./meter/open/edit.component";
 import {CommonService} from "../../service/common.service";
+import {EopenComponent} from "./cusinfo/eopen/eopen.component";
+import {EcostComponent} from "./cost/ecost/ecost.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -40,7 +42,9 @@ const COMPONENTS_NOROUNT = [
   EcardComponent,
   WcardComponent,
   AccountComponent,
-  CusOpenAccountComponent
+  CusOpenAccountComponent,
+  EopenComponent,
+  EcostComponent
 ];
 
 const COMPONENTS_EXPORTS = [

@@ -9,6 +9,7 @@ import {EmeterComponent} from "./meter/emeter/emeter.component";
 import {WmeterComponent} from "./meter/wmeter/wmeter.component";
 import {RouteComponent} from "./route/route.component";
 import {AccountComponent} from "./account/account.component";
+import {EcostComponent} from "./cost/ecost/ecost.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
       {path: 'wmeter', component: WmeterComponent},
       {path: 'ecard', component: EcardComponent},
       {path: 'wcard', component: WcardComponent},
+      {path: 'ecost', component: EcostComponent},
       {path: 'account-list', component: AccountComponent},
     ],
   }
