@@ -10,6 +10,7 @@ import {CommonService} from "../../../../service/common.service";
 import {debounceTime, map, switchMap} from "rxjs/internal/operators";
 import {BaseComponent} from "../../../base/base.component";
 import {BehaviorSubject, Observable} from "rxjs/index";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'cus-emeter',
@@ -120,8 +121,12 @@ export class EcostComponent extends BaseComponent implements OnInit {
   selectedRows: SimpleTableData[] = [];
   expandForm = false;
 
-  constructor(private http: _HttpClient, public msg: NzMessageService, private service: CommonService) {
+  constructor(private route: ActivatedRoute, private http: _HttpClient, public msg: NzMessageService, private service: CommonService) {
     super()
+    this.route.params.subscribe(data => {
+      console.log(data)
+    })
+
     var that = this;
     service.getClassNodes(function (node) {
       that.node = node;

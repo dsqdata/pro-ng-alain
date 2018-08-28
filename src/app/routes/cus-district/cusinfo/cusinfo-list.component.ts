@@ -7,6 +7,7 @@ import {
   SimpleTableData,
 } from '@delon/abc';
 import {EopenComponent} from "./eopen/eopen.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'cus-cusinfo-list',
@@ -86,7 +87,7 @@ export class CusinfoListComponent implements OnInit {
           component: EopenComponent,
           paramName: 'i',
           click: () => this.st.reload(),
-         // iif: (item: any) => item.status === 1 && item.bzstatus === 0
+          //iif: (item: any) => item.status === 1 && item.bzstatus === 0
         },
         {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.estatus != 1},
         {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1},
@@ -97,7 +98,7 @@ export class CusinfoListComponent implements OnInit {
   selectedRows: SimpleTableData[] = [];
   expandForm = false;
 
-  constructor(private http: _HttpClient, public msg: NzMessageService) {
+  constructor(private router: Router, private http: _HttpClient, public msg: NzMessageService) {
     this.getNodes();
   }
 
@@ -159,14 +160,16 @@ export class CusinfoListComponent implements OnInit {
   }
 
   showDtlModal(item?: any): void {
-    if (item) {
-      this.i = item;
-    } else {
-      this.i = {}
-    }
-    console.log(this.i)
-    this.editer = false;
-    this.isVisible = true;
+    this.router.navigate(['/cus/district/eopen', {test: 0}]);
+
+    // if (item) {
+    //   this.i = item;
+    // } else {
+    //   this.i = {}
+    // }
+    // console.log(this.i)
+    // this.editer = false;
+    // this.isVisible = true;
   }
 
   showModal(item?: any): void {
