@@ -23,6 +23,7 @@ export class EopenComponent extends BaseComponent implements OnInit {
   isConfirmLoading: Boolean = false;
   i: any = {};
   items: Array<any> = [{name: 'oo'}];
+  editer: Boolean = false;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private http: _HttpClient, public msg: NzMessageService, private modalService: NzModalService,
