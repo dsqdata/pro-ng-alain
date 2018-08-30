@@ -1,64 +1,83 @@
-import {NzMessageService, NzModalRef} from 'ng-zorro-antd';
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {_HttpClient} from '@delon/theme';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NzCascaderComponent, NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {_HttpClient, TitleService} from '@delon/theme';
+import {
+  SimpleTableComponent,
+  SimpleTableColumn,
+  SimpleTableData,
+} from '@delon/abc';
+import {CommonService} from "../../../../service/common.service";
+import {debounceTime, filter, map, switchMap} from "rxjs/internal/operators";
+import {BaseComponent} from "../../../base/base.component";
 import {BehaviorSubject, Observable} from "rxjs/index";
-import {debounceTime, map, switchMap} from "rxjs/internal/operators";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {FormGroup} from "@angular/forms";
+import {EmeterComponent} from "../../meter/emeter/emeter.component";
+import {EmeterOpenInfoComponent} from "./emeter-open-info.component";
 
 @Component({
-  selector: 'app-extras-poi-edit',
+  selector: 'cus-emeter',
   templateUrl: './eopen.component.html',
 })
-export class EopenComponent implements OnInit {
-  i: any;
-  randomUserUrl = 'api/cusinfo/getCusinfoInfos?ps=5';
-  searchChange$ = new BehaviorSubject('');
-  optionList = [];
-  selectedUser;
-  isLoading = false;
+export class EopenComponent extends BaseComponent implements OnInit {
+  isConfirmLoading: Boolean = false;
+  i: any = {};
+  items: Array<any> = [{name: 'oo'}];
 
-  onSearch(value: string): void {
-    this.isLoading = true;
-    this.randomUserUrl = this.randomUserUrl.split('&')[0] + "&name=" + value
-    this.searchChange$.next(value);
+  constructor(private route: ActivatedRoute, private router: Router,
+              private http: _HttpClient, public msg: NzMessageService, private modalService: NzModalService,
+              private titleSrv: TitleService, private service: CommonService) {
+    super()
   }
 
-  constructor(private modal: NzModalRef,
-              public msgSrv: NzMessageService,
-              public http: _HttpClient) {
-  }
 
   ngOnInit() {
-    const getRandomNameList = (name: string) => this.http.post(`${this.randomUserUrl}`)
-      .pipe(map((res: any) => {
-        return res.companyInfos
-      }))
-    const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
-    optionList$.subscribe(data => {
-      this.optionList = data;
-      this.isLoading = false;
-    });
+
   }
 
-  save() {
-    var data = {cusId: this.selectedUser, emeId: this.i._id, meterType: 'e'}
-    // this.http.get('./assets/tmp/pois.json').subscribe(() => {
-    //   this.msgSrv.success('保存成功，只是模拟，实际未变更');
-    // });
+  del(index) {
+    this.items.splice(index, 1);
+  }
+
+  add(): void {
+
+    const modal = this.modalService.create({
+      nzTitle: '电表信息',
+      nzWidth: '80%',
+      nzContent: EmeterOpenInfoComponent,
+      nzComponentParams: {},
+      nzFooter: [{
+        label: '取消',
+        onClick: (componentInstance) => {
+          componentInstance.destroyModal();
+        }
+      }, {
+        label: '确定',
+        onClick: (componentInstance) => {
+          this.items.push(componentInstance.getModalData())
+          componentInstance.destroyModal();
+        }
+      }]
+    });
+
+    modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
+    // Return a result when closed
+    modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
+  }
+
+  handleOk(): void {
+    this.isConfirmLoading = true;
+    console.log(this.i)
     this.http
-      .post('api/account/addAccountInfo', data).subscribe(
+      .post('api/emeter/addEmeterInfo', this.i).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
-          this.modal.close(true);
-          this.close();
+          this.isConfirmLoading = false;
         } else {
-          this.msgSrv.error(obj.message)
+          this.isConfirmLoading = false;
+          this.msg.error(obj.message)
         }
       }
     )
-  }
-
-  close() {
-    this.modal.destroy();
   }
 }

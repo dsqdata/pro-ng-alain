@@ -99,6 +99,12 @@
               "link": "/cus/district/cusinfo-list",
               "i18n": "cusinfo",
               "shortcut": true
+            },
+            {
+              "text": "eopen",
+              "link": "/cus/district/eopen",
+              "i18n": "eopen",
+              "shortcut": true
             }
           ]
         },

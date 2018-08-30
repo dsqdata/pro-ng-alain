@@ -1,0 +1,123 @@
+<div>
+
+  <nz-row nzGutter="16">
+    <nz-col nzLg="16" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label>电表号</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label>查询电表信息</nz-form-label>
+        <nz-form-control>
+          <button nz-button type="primary" nzType="primary">获取电表信息</button>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>原表转入金额(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>初始金额(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>功率阈值(W)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>允许赊欠金额(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>尖电价(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>峰电价(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>平电价(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>谷电价(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label>告警金额A(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label>告警金额B(元)</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzLg="8" nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzRequired>用电类型</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 100%;" [(ngModel)]="i.ifyff" required nzAllowClear nzPlaceHolder="请选择用电类型"
+                     name="ifyff">
+            <nz-option nzValue="Y" nzLabel="居民用电"></nz-option>
+            <nz-option nzValue="N" nzLabel="商业用电"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzLg="24" nzMd="12" nzSm="24">
+      <label nz-checkbox [(ngModel)]="i.a">告警金额A提示</label>
+      <label nz-checkbox [(ngModel)]="i.b">告警金额B提示</label>
+      <label nz-checkbox [(ngModel)]="i.c">预付费模式</label>
+    </nz-col>
+  </nz-row>
+
+</div>

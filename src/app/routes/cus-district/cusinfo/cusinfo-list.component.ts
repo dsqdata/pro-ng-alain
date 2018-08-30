@@ -7,7 +7,7 @@ import {
   SimpleTableData,
 } from '@delon/abc';
 import {EopenComponent} from "./eopen/eopen.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'cus-cusinfo-list',
@@ -98,7 +98,7 @@ export class CusinfoListComponent implements OnInit {
   selectedRows: SimpleTableData[] = [];
   expandForm = false;
 
-  constructor(private router: Router, private http: _HttpClient, public msg: NzMessageService) {
+  constructor(private router: Router, private route: ActivatedRoute, private http: _HttpClient, public msg: NzMessageService) {
     this.getNodes();
   }
 
@@ -160,7 +160,8 @@ export class CusinfoListComponent implements OnInit {
   }
 
   showDtlModal(item?: any): void {
-    this.router.navigate(['/cus/district/eopen', {test: 0}]);
+    // this.router.navigate(['/cus/district/eopen', {test: 0}]);
+    this.router.navigate(['/cus/district/eopen'], {relativeTo: this.route, replaceUrl: true});
 
     // if (item) {
     //   this.i = item;

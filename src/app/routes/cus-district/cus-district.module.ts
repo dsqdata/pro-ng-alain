@@ -23,6 +23,7 @@ import {CusOpenAccountComponent} from "./meter/open/edit.component";
 import {CommonService} from "../../service/common.service";
 import {EopenComponent} from "./cusinfo/eopen/eopen.component";
 import {EcostComponent} from "./cost/ecost/ecost.component";
+import {EmeterOpenInfoComponent} from "./cusinfo/eopen/emeter-open-info.component";
 
 const COMPONENTS_NOROUNT = [
   CompanyListComponent,
@@ -44,7 +45,8 @@ const COMPONENTS_NOROUNT = [
   AccountComponent,
   CusOpenAccountComponent,
   EopenComponent,
-  EcostComponent
+  EcostComponent,
+  EmeterOpenInfoComponent
 ];
 
 const COMPONENTS_EXPORTS = [
@@ -54,7 +56,8 @@ const COMPONENTS_EXPORTS = [
   ClassInfoComponent,
   CommunityListComponent,
   FloorListComponent,
-  ClassListComponent
+  ClassListComponent,
+  EmeterOpenInfoComponent
 ]
 
 @NgModule({
