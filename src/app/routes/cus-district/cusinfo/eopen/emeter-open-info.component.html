@@ -1,11 +1,17 @@
 <div>
-
   <nz-row nzGutter="16">
     <nz-col nzLg="16" nzMd="12" nzSm="24">
       <nz-form-item>
         <nz-form-label>电表号</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
+          <nz-select name="id" style="width: 100%;" [(ngModel)]="i._id" nzPlaceHolder="选择电表信息" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" required>
+            <ng-container *ngFor="let o of optionList">
+              <nz-option *ngIf="!isLoading" [nzValue]="o._id" [nzLabel]="o.no"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i>  加载更多...
+            </nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -119,5 +125,4 @@
       <label nz-checkbox [(ngModel)]="i.c">预付费模式</label>
     </nz-col>
   </nz-row>
-
 </div>

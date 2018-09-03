@@ -97,8 +97,7 @@
             {
               "text": "cusinfo",
               "link": "/cus/district/cusinfo-list",
-              "i18n": "cusinfo",
-              "shortcut": true
+              "i18n": "cusinfo"
             },
             {
               "text": "eopen",

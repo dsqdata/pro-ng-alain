@@ -72,7 +72,7 @@ export class CusinfoListComponent implements OnInit {
     {title: '', index: 'key', type: 'checkbox'},
     {title: '客户编号', index: '_id'},
     {title: '客户名称', index: 'name'},
-    {title: '办公室', index: 'classAllPath', format: (item: any) => this.getClassAllPathName(item)},
+    // {title: '办公室', index: 'classAllPath', format: (item: any) => this.getClassAllPathName(item)},
     {title: '电表', index: 'estatus', render: 'estatus'},
     {title: '水表', index: 'wstatus', render: 'wstatus'},
     {title: '状态', index: 'status', render: 'status'},
@@ -81,15 +81,7 @@ export class CusinfoListComponent implements OnInit {
     {
       title: '操作',
       buttons: [
-        {
-          text: '电表开户',
-          type: 'modal',
-          component: EopenComponent,
-          paramName: 'i',
-          click: () => this.st.reload(),
-          //iif: (item: any) => item.status === 1 && item.bzstatus === 0
-        },
-        {text: '编辑', click: (item: any) => this.showModal(item), iif: (item: any) => item.estatus != 1},
+        {text: '开户', click: (item: any) => this.showModal(item)},
         {text: '删除', type: 'del', click: (item: any) => this.delIteml(item), iif: (item: any) => item.estatus != 1},
         {text: '查看', click: (item: any) => this.showDtlModal(item)},
       ],
@@ -99,7 +91,7 @@ export class CusinfoListComponent implements OnInit {
   expandForm = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private http: _HttpClient, public msg: NzMessageService) {
-    this.getNodes();
+    // this.getNodes();
   }
 
   getClassAllPathName(item: any) {
@@ -160,28 +152,17 @@ export class CusinfoListComponent implements OnInit {
   }
 
   showDtlModal(item?: any): void {
-    // this.router.navigate(['/cus/district/eopen', {test: 0}]);
-    this.router.navigate(['/cus/district/eopen'], {relativeTo: this.route, replaceUrl: true});
-
-    // if (item) {
-    //   this.i = item;
-    // } else {
-    //   this.i = {}
-    // }
-    // console.log(this.i)
-    // this.editer = false;
-    // this.isVisible = true;
+    this.router.navigate(['/cus/district/eopen'], {
+      skipLocationChange: true,
+      queryParams: {item: JSON.stringify(item), isShow: true}
+    });
   }
 
   showModal(item?: any): void {
-    if (item) {
-      this.i = item;
-    } else {
-      this.i = {}
-    }
-    console.log(this.i)
-    this.editer = true;
-    this.isVisible = true;
+    this.router.navigate(['/cus/district/eopen'], {
+      skipLocationChange: true,
+      queryParams: {item: JSON.stringify(item), isShow: false}
+    });
   }
 
   handleOk(): void {

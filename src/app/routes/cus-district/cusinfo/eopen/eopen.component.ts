@@ -24,6 +24,7 @@ export class EopenComponent extends BaseComponent implements OnInit {
   i: any = {};
   items: Array<any> = [{name: 'oo'}];
   editer: Boolean = false;
+  queryParams: any = {}
 
   constructor(private route: ActivatedRoute, private router: Router,
               private http: _HttpClient, public msg: NzMessageService, private modalService: NzModalService,
@@ -33,6 +34,20 @@ export class EopenComponent extends BaseComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+        this.queryParams = params;
+        if (this.queryParams.item) {
+          this.i = JSON.parse(this.queryParams.item)
+
+          console.log(this.i)
+        }
+        if (this.queryParams.isShow == "false") {
+          this.editer = true
+        }
+        console.log(this.queryParams)
+      }
+    )
 
   }
 
