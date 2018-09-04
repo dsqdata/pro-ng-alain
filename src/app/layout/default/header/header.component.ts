@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { SettingsService } from '@delon/theme';
+import {Component, ViewChild} from '@angular/core';
+import {SettingsService} from '@delon/theme';
 
 @Component({
   selector: 'layout-header',
@@ -8,7 +8,9 @@ import { SettingsService } from '@delon/theme';
 export class HeaderComponent {
   searchToggleStatus: boolean;
 
-  constructor(public settings: SettingsService) {}
+  constructor(public settings: SettingsService) {
+    window.localStorage.setItem('branch', 'bCU_jQPHW')
+  }
 
   toggleCollapsedSidebar() {
     this.settings.setLayout('collapsed', !this.settings.layout.collapsed);
