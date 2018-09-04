@@ -92,7 +92,8 @@ export class DefaultInterceptor implements HttpInterceptor {
       url = environment.SERVER_URL + url;
     }
     const branch = window.localStorage.getItem("branch");
-    var headers = req.headers.append('x-access-branch', branch)
+    const company = window.localStorage.getItem("company");
+    var headers = req.headers.append('x-access-branch', branch).append('x-access-company', company)
     const newReq = req.clone({
       url: url,
       headers: headers
