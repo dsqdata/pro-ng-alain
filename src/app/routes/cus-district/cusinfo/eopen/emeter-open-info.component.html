@@ -4,12 +4,17 @@
       <nz-form-item>
         <nz-form-label>电表号</nz-form-label>
         <nz-form-control>
-          <nz-select name="id" style="width: 100%;" [(ngModel)]="i._id" nzPlaceHolder="选择电表信息" nzAllowClear nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" required>
+          <nz-select name="meterId" style="width: 100%;" [(ngModel)]="i.meterId" nzPlaceHolder="选择电表信息" nzAllowClear
+                     nzShowSearch
+                     [nzServerSearch]="true"
+                     (nzOnSearch)="onSearch($event)"
+                     (ngModelChange)="onChange($event)"
+                     required>
             <ng-container *ngFor="let o of optionList">
               <nz-option *ngIf="!isLoading" [nzValue]="o._id" [nzLabel]="o.no"></nz-option>
             </ng-container>
             <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-              <i class="anticon anticon-loading anticon-spin loading-icon"></i>  加载更多...
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i> 加载更多...
             </nz-option>
           </nz-select>
         </nz-form-control>
@@ -27,7 +32,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>原表转入金额(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required/>
+          <input nz-input [(ngModel)]="i.srcBalance" name="srcBalance" maxlength="20" required/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -35,7 +40,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>初始金额(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20"/>
+          <input nz-input [(ngModel)]="i.initBalance" name="initBalance" maxlength="20"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -44,7 +49,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>功率阈值(W)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10"/>
+          <input nz-input [(ngModel)]="i.powerThreshold" name="powerThreshold" maxlength="10"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -52,7 +57,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>允许赊欠金额(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.arreBalance" name="arreBalance" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -61,7 +66,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>尖电价(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.maxPrice" name="maxPrice" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -69,7 +74,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>峰电价(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.lowPrice" name="lowPrice" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -77,7 +82,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>平电价(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.equPrice" name="equPrice" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -85,7 +90,7 @@
       <nz-form-item>
         <nz-form-label nzRequired>谷电价(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.minPrice" name="minPrice" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -94,7 +99,7 @@
       <nz-form-item>
         <nz-form-label>告警金额A(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.alarmA" name="alarmA" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -102,7 +107,7 @@
       <nz-form-item>
         <nz-form-label>告警金额B(元)</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30"/>
+          <input nz-input [(ngModel)]="i.alarmB" name="alarmB" maxlength="30"/>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -110,19 +115,19 @@
       <nz-form-item>
         <nz-form-label nzRequired>用电类型</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 100%;" [(ngModel)]="i.ifyff" required nzAllowClear nzPlaceHolder="请选择用电类型"
-                     name="ifyff">
-            <nz-option nzValue="Y" nzLabel="居民用电"></nz-option>
-            <nz-option nzValue="N" nzLabel="商业用电"></nz-option>
+          <nz-select style="width: 100%;" [(ngModel)]="i.meterType" required nzAllowClear nzPlaceHolder="请选择用电类型"
+                     name="meterType">
+            <nz-option nzValue="M" nzLabel="居民用电"></nz-option>
+            <nz-option nzValue="S" nzLabel="商业用电"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
 
     <nz-col nzLg="24" nzMd="12" nzSm="24">
-      <label nz-checkbox [(ngModel)]="i.a">告警金额A提示</label>
-      <label nz-checkbox [(ngModel)]="i.b">告警金额B提示</label>
-      <label nz-checkbox [(ngModel)]="i.c">预付费模式</label>
+      <label nz-checkbox [(ngModel)]="i.alarmFlagA">告警金额A提示</label>
+      <label nz-checkbox [(ngModel)]="i.alarmFlagB">告警金额B提示</label>
+      <label nz-checkbox [(ngModel)]="i.prepayment">预付费模式</label>
     </nz-col>
   </nz-row>
 </div>

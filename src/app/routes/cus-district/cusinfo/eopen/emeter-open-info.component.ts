@@ -11,7 +11,10 @@ import {BehaviorSubject, Observable} from "rxjs/index";
 export class EmeterOpenInfoComponent implements OnInit {
   @Input() title: string;
   @Input() subtitle: string;
-  i: any = {};
+  i: any = {
+    arreBalance: 0,
+    maxPrice: 0
+  };
 
   randomUserUrl = 'api/emeter/getEmetersUnopen?ps=5';
   searchChange$ = new BehaviorSubject('');
@@ -24,12 +27,10 @@ export class EmeterOpenInfoComponent implements OnInit {
   ngOnInit() {
     const getRandomNameList = (name: string) => this.http.post(`${this.randomUserUrl}`)
       .pipe(map((res: any) => {
-        console.log(res.companyInfos)
         return res.companyInfos
       }))
     const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
     optionList$.subscribe(data => {
-      console.log(data)
       this.optionList = data;
       this.isLoading = false;
     });
@@ -39,6 +40,15 @@ export class EmeterOpenInfoComponent implements OnInit {
     this.isLoading = true;
     this.randomUserUrl = this.randomUserUrl.split('&')[0] + "&name=" + value
     this.searchChange$.next(value);
+  }
+
+  onChange(value: any): void {
+    for (var j = 0; j < this.optionList.length; j++) {
+      if (this.optionList[j]._id === value) {
+        this.i.meterNo = this.optionList[j].no
+        break;
+      }
+    }
   }
 
   destroyModal(): void {

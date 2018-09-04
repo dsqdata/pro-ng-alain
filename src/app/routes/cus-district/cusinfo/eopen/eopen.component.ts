@@ -21,9 +21,9 @@ import {EmeterOpenInfoComponent} from "./emeter-open-info.component";
 })
 export class EopenComponent extends BaseComponent implements OnInit {
   isConfirmLoading: Boolean = false;
-  i: any = {};
-  items: Array<any> = [{name: 'oo'}];
-  editer: Boolean = false;
+  obj: any = {};
+  // items: Array<any> = [{name: 'oo'}];
+  editer: Boolean = true;
   queryParams: any = {}
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -34,25 +34,24 @@ export class EopenComponent extends BaseComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(params => {
         this.queryParams = params;
         if (this.queryParams.item) {
-          this.i = JSON.parse(this.queryParams.item)
-
-          console.log(this.i)
+          this.obj = JSON.parse(this.queryParams.item)
         }
-        if (this.queryParams.isShow == "false") {
-          this.editer = true
+        if (this.queryParams.isShow == "true") {
+          this.editer = false
         }
-        console.log(this.queryParams)
       }
     )
 
+    if (!this.obj.emeter) {
+      this.obj.emeter = []
+    }
   }
 
   del(index) {
-    this.items.splice(index, 1);
+    this.obj.emeter.splice(index, 1);
   }
 
   add(): void {
@@ -70,8 +69,14 @@ export class EopenComponent extends BaseComponent implements OnInit {
       }, {
         label: '确定',
         onClick: (componentInstance) => {
-          this.items.push(componentInstance.getModalData())
-          componentInstance.destroyModal();
+          var j = componentInstance.getModalData();
+
+          if (!j.meterNo) {
+            this.msg.error("请选择电表信息")
+          } else {
+            this.obj.emeter.push(componentInstance.getModalData())
+            componentInstance.destroyModal();
+          }
         }
       }]
     });
@@ -83,17 +88,18 @@ export class EopenComponent extends BaseComponent implements OnInit {
 
   handleOk(): void {
     this.isConfirmLoading = true;
-    console.log(this.i)
+    this.isConfirmLoading = true;
     this.http
-      .post('api/emeter/addEmeterInfo', this.i).subscribe(
+      .post('api/cusinfo/addCusinfoInfo', this.obj).subscribe(
       (obj: any) => {
         if (obj.state == "success") {
           this.isConfirmLoading = false;
+          this.msg.info("开户成功")
+          this.obj = {emeter: []}
         } else {
           this.isConfirmLoading = false;
           this.msg.error(obj.message)
         }
-      }
-    )
+      });
   }
 }

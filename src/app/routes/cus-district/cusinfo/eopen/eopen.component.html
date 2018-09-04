@@ -6,15 +6,7 @@
         <nz-form-item>
           <nz-form-label>客户编码</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="i._id" name="num" maxlength="30" readonly/>
-          </nz-form-control>
-        </nz-form-item>
-      </nz-col>
-      <nz-col nzLg="8" nzMd="12" nzSm="24">
-        <nz-form-item>
-          <nz-form-label>客户注册地址</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="i.address" name="address" maxlength="50" [readonly]="!editer"/>
+            <input nz-input [(ngModel)]="obj._id" name="num" maxlength="30" readonly/>
           </nz-form-control>
         </nz-form-item>
       </nz-col>
@@ -22,7 +14,7 @@
         <nz-form-item>
           <nz-form-label nzRequired>客户名称</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="i.name" name="name" maxlength="20" required [readonly]="!editer"/>
+            <input nz-input [(ngModel)]="obj.name" name="name" maxlength="20" [readonly]="!editer" required/>
           </nz-form-control>
         </nz-form-item>
       </nz-col>
@@ -30,16 +22,23 @@
         <nz-form-item>
           <nz-form-label>客户全称</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="i.allname" name="allname" maxlength="20" [readonly]="!editer"/>
+            <input nz-input [(ngModel)]="obj.allname" name="allname" maxlength="20" [readonly]="!editer"/>
           </nz-form-control>
         </nz-form-item>
       </nz-col>
-
+      <nz-col nzLg="8" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>客户注册地址</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="obj.address" name="address" maxlength="50" [readonly]="!editer"/>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
       <nz-col nzLg="8" nzMd="12" nzSm="24">
         <nz-form-item>
           <nz-form-label>负责人</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="i.contacts" name="contacts" maxlength="10" placeholder="10字以内"
+            <input nz-input [(ngModel)]="obj.contacts" name="contacts" maxlength="10" placeholder="10字以内"
                    [readonly]="!editer"/>
           </nz-form-control>
         </nz-form-item>
@@ -48,14 +47,14 @@
         <nz-form-item>
           <nz-form-label>联系电话</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="i.tel" name="tel" maxlength="30" [readonly]="!editer"/>
+            <input nz-input [(ngModel)]="obj.tel" name="tel" maxlength="30" [readonly]="!editer"/>
           </nz-form-control>
         </nz-form-item>
       </nz-col>
       <nz-col nzLg="16" nzMd="12" nzSm="24">
         <nz-form-label>客户简介</nz-form-label>
         <nz-form-control>
-          <textarea nz-input row="4" [(ngModel)]="i.introduction" name="introduction" maxlength="300"
+          <textarea nz-input row="4" [(ngModel)]="obj.introduction" name="introduction" maxlength="300"
                     placeholder="300字以内"></textarea>
         </nz-form-control>
       </nz-col>
@@ -63,7 +62,7 @@
   </nz-card>
 
   <nz-card [nzBordered]="false" nzTitle="电表开户">
-    <nz-table [nzData]="items" [nzShowPagination]="false">
+    <nz-table [nzData]="obj.emeter.values()" [nzShowPagination]="false">
       <thead>
       <tr>
         <th>电表号</th>
@@ -73,15 +72,15 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of items; let i = index">
+      <tr *ngFor="let item of obj.emeter; let i = index">
         <td>
-          <span *ngIf="editIndex!==i">{{items[i].name}}</span>
+          <span *ngIf="editIndex!==i">{{obj.emeter[i].meterNo}}</span>
         </td>
         <td>
-          <span *ngIf="editIndex!==i">{{items[i].workId}}</span>
+          <span *ngIf="editIndex!==i">{{obj.emeter[i].workId}}</span>
         </td>
         <td>
-          <span *ngIf="editIndex!==i">{{items[i].department}}</span>
+          <span *ngIf="editIndex!==i">{{obj.emeter[i].department}}</span>
         </td>
         <td>
             <span *ngIf="editIndex!==i">
@@ -101,8 +100,7 @@
     </button>
 
   </nz-card>
-  <footer-toolbar errorCollect>
-    <button nz-button type="primary" nzType="primary">提交</button>
+  <footer-toolbar>
     <button nz-button [disabled]="!f.form.valid || !f.form.dirty" [nzLoading]="isConfirmLoading" [nzType]="'primary'"
             *ngIf="editer"
             (click)="handleOk()">保存
