@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import {Inject, Injectable, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 import {
   HttpInterceptor,
@@ -16,13 +16,14 @@ import {mergeMap, catchError} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd';
 import {_HttpClient} from '@delon/theme';
 import {environment} from '@env/environment';
+import {DA_SERVICE_TOKEN, TokenService} from "@delon/auth";
 
 /**
  * 默认HTTP拦截器，其注册细节见 `app.module.ts`
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector, @Inject(DA_SERVICE_TOKEN) private tokenService: TokenService) {
   }
 
   get msg(): NzMessageService {
@@ -92,14 +93,15 @@ export class DefaultInterceptor implements HttpInterceptor {
       url = environment.SERVER_URL + url;
     }
     const branch = window.localStorage.getItem("branch");
-    const company = window.localStorage.getItem("company");
-    var headers = req.headers.append('x-access-branch', branch).append('x-access-company', company)
+    // const company = window.localStorage.getItem("company");
+
+    var headers = req.headers.append('x-access-branch', this.tokenService.get().selectBranch._id)
+      .append('x-access-company', this.tokenService.get().company._id)
     const newReq = req.clone({
       url: url,
       headers: headers
     });
 
-    console.log(branch)
 
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {

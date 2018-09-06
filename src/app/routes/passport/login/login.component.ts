@@ -1,17 +1,17 @@
-import { SettingsService } from '@delon/theme';
-import { Component, OnDestroy, Inject, Optional } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import {SettingsService} from '@delon/theme';
+import {Component, OnDestroy, Inject, Optional} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {
   SocialService,
   SocialOpenType,
   TokenService,
   DA_SERVICE_TOKEN,
 } from '@delon/auth';
-import { ReuseTabService } from '@delon/abc';
-import { environment } from '@env/environment';
-import { StartupService } from '@core/startup/startup.service';
+import {ReuseTabService} from '@delon/abc';
+import {environment} from '@env/environment';
+import {StartupService} from '@core/startup/startup.service';
 
 @Component({
   selector: 'passport-login',
@@ -26,19 +26,17 @@ export class UserLoginComponent implements OnDestroy {
   type = 0;
   loading = false;
 
-  constructor(
-    fb: FormBuilder,
-    private router: Router,
-    public msg: NzMessageService,
-    private modalSrv: NzModalService,
-    private settingsService: SettingsService,
-    private socialService: SocialService,
-    @Optional()
-    @Inject(ReuseTabService)
-    private reuseTabService: ReuseTabService,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: TokenService,
-    private startupSrv: StartupService,
-  ) {
+  constructor(fb: FormBuilder,
+              private router: Router,
+              public msg: NzMessageService,
+              private modalSrv: NzModalService,
+              private settingsService: SettingsService,
+              private socialService: SocialService,
+              @Optional()
+              @Inject(ReuseTabService)
+              private reuseTabService: ReuseTabService,
+              @Inject(DA_SERVICE_TOKEN) private tokenService: TokenService,
+              private startupSrv: StartupService,) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(5)]],
       password: [null, Validators.required],
@@ -54,12 +52,15 @@ export class UserLoginComponent implements OnDestroy {
   get userName() {
     return this.form.controls.userName;
   }
+
   get password() {
     return this.form.controls.password;
   }
+
   get mobile() {
     return this.form.controls.mobile;
   }
+
   get captcha() {
     return this.form.controls.captcha;
   }
@@ -114,11 +115,15 @@ export class UserLoginComponent implements OnDestroy {
         }
       }
 
+      // window.localStorage.setItem('company', 'bCU_jQPHW')
+      // window.localStorage.setItem('branch', 'kyWFvlIAT')
       // 清空路由复用信息
       this.reuseTabService.clear();
       // 设置Token信息
       this.tokenService.set({
         token: '123456789',
+        company: {_id: 'bCU_jQPHW', name: '柒拾佳护'},
+        branch: [{_id: 'kyWFvlIAT', name: '中海寰宇天下'}, {_id: 'kyWFvlIA5', name: '测试'}],
         name: this.userName.value,
         email: `cipchk@qq.com`,
         id: 10000,
@@ -127,7 +132,8 @@ export class UserLoginComponent implements OnDestroy {
       // 重新获取 StartupService 内容，若其包括 User 有关的信息的话
       // this.startupSrv.load().then(() => this.router.navigate(['/']));
       // 否则直接跳转
-      this.router.navigate(['/']);
+
+      this.router.navigate(['/community']);
     }, 1000);
   }
 

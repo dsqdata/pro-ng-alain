@@ -20,6 +20,7 @@ import { UserLockComponent } from './passport/lock/lock.component';
 import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
+import {SelectCommunityComponent} from "./passport/community/select-community.component";
 
 const routes: Routes = [
   {
@@ -79,6 +80,11 @@ const routes: Routes = [
     path: 'lock',
     component: UserLockComponent,
     data: { title: '锁屏', titleI18n: 'lock' },
+  },
+  {
+    path: 'community',
+    component: SelectCommunityComponent,
+    data: { title: '社区管理', titleI18n: 'community' },
   },
   { path: '403', component: Exception403Component },
   { path: '404', component: Exception404Component },

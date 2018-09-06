@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div class="abs-center width-lg">
+    <div class="py-lg text-center">
+      <nz-avatar [nzSrc]="settings.user.avatar" nzIcon="anticon anticon-user" nzSize="large"></nz-avatar>
+    </div>
+    <nz-card [nzBordered]="false">
+      <p class="mb-sm">选择社区</p>
+      <form nz-form [formGroup]="f" (ngSubmit)="submit()" role="form">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSize="large">
+              <nz-select [(ngModel)]="token.selectBranch" [nzPlaceHolder]="'请选择'" style="width: 100%"
+                         [nzShowSearch]="true" formControlName="communityList">
+                <nz-option *ngFor="let i of token.branch; let idx = index" [nzLabel]="i.name"
+                           [nzValue]="i"></nz-option>
+              </nz-select>
+            </nz-input-group>
+            <nz-form-explain *ngIf="f.get('communityList').dirty && f.get('communityList').errors">请选择社区
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-row nzType="flex" nzAlign="middle">
+          <nz-col [nzOffset]="12" [nzSpan]="12" style="text-align:right;">
+            <button nz-button nzSize="large" [disabled]="!f.valid" nzType="primary">确定</button>
+          </nz-col>
+        </nz-row>
+      </form>
+    </nz-card>
+    <div class="p-lg text-center text-sm">
+      &copy; {{ settings.app.year }} - {{ settings.app.name }}
+      <br> {{ settings.app.description }}
+    </div>
+  </div>
+</div>

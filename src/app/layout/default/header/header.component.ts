@@ -9,8 +9,8 @@ export class HeaderComponent {
   searchToggleStatus: boolean;
 
   constructor(public settings: SettingsService) {
-    window.localStorage.setItem('company', 'bCU_jQPHW')
-    window.localStorage.setItem('branch', 'kyWFvlIAT')
+    // window.localStorage.setItem('company', 'bCU_jQPHW')
+    // window.localStorage.setItem('branch', 'kyWFvlIAT')
   }
 
   toggleCollapsedSidebar() {
